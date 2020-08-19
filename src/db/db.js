@@ -25,6 +25,22 @@ class Db {
       throw error;
     }
   }
+  static async addUnit(model, data) {
+    try {
+      const units = await model({ ...data });
+      return units.save();
+    } catch (error) {
+      throw error;
+    }
+  }
+  static async getAllUnits(model) {
+    try {
+      const allUnits = await model.find({});
+      return allUnits;
+    } catch (error) {
+      throw error;
+    }
+  }
 }
 
 export default Db;

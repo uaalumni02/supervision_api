@@ -10,6 +10,10 @@ const supervisionTypeSchema = Schema({
     min: 4,
     validate: [isValidSupervisionType, "Please enter valid supervision type"],
   },
+  __v: {
+    type: Number,
+    select: false,
+  },
 });
 
 export default mongoose.model("SupervisionType", supervisionTypeSchema);

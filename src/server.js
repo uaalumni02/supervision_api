@@ -13,6 +13,7 @@ const port = process.env.PORT || 3000;
 const router = express.Router();
 
 import supervisionTypeRoutes from "./routes/supervisionType.route";
+import unitRoutes from "./routes/unit.route";
 
 app.use(cors());
 app.use(express.json());
@@ -34,6 +35,7 @@ if (process.env.NODE_ENV == "test") {
 }
 
 router.use("/supervision", supervisionTypeRoutes);
+router.use("/unit", unitRoutes);
 
 app.use("/api", router);
 
