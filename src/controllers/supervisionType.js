@@ -29,6 +29,22 @@ class Supervision {
       );
       return Response.responseOk(res, allSupervisionTypes);
     } catch (error) {
+      return Response.responseServerError(res);
+    }
+  }
+  static async getSupervisionTypeById(req, res) {
+    const { id } = req.params;
+    try {
+      const { error } = validator.validateAsync({ id });
+      if (error) {
+        return Response.responseValidationError(res, Errors.INVALID_ID);
+      }
+      const supervisionById = await Db.getSupervisionTypeById(
+        SupervisionType,
+        id
+      );
+      return Response.responseOk(res, supervisionById);
+    } catch (error) {
       return Response.responseNotFound(res);
     }
   }

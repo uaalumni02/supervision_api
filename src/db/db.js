@@ -17,6 +17,14 @@ class Db {
       throw error;
     }
   }
+  static async getSupervisionTypeById(model, id) {
+    try {
+      const supervisionType = await model.findById(id);
+      return supervisionType;
+    } catch (error) {
+      throw error;
+    }
+  }
 }
 
 export default Db;
