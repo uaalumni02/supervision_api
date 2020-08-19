@@ -1,4 +1,4 @@
-import { model } from "mongoose";
+
 
 class Db {
   static async addSupervisionType(model, data) {
@@ -37,6 +37,14 @@ class Db {
     try {
       const allUnits = await model.find({});
       return allUnits;
+    } catch (error) {
+      throw error;
+    }
+  }
+  static async getUnitById(model, id) {
+    try {
+      const unit = await model.findById(id);
+      return unit;
     } catch (error) {
       throw error;
     }
