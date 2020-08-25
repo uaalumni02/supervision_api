@@ -1,5 +1,3 @@
-
-
 class Db {
   static async addSupervisionType(model, data) {
     try {
@@ -45,6 +43,30 @@ class Db {
     try {
       const unit = await model.findById(id);
       return unit;
+    } catch (error) {
+      throw error;
+    }
+  }
+  static async findUser(model, username) {
+    try {
+      const user = await model.findOne({ username });
+      return user;
+    } catch (error) {
+      throw error;
+    }
+  }
+  static async saveUser(model, user) {
+    try {
+      const newUser = await model({ ...user });
+      return newUser.save();
+    } catch (error) {
+      throw error;
+    }
+  }
+  static async getAllUsers(model) {
+    try {
+      const allUsers = await model.find({});
+      return allUsers;
     } catch (error) {
       throw error;
     }
