@@ -23,7 +23,7 @@ const responseOkCreated = (res, data) => {
 const responseOk = (res, data) => {
     return res.status(200).json({
         success: true,
-        data
+        data, 
     });
 }
 const responseConflict = (res) => {
@@ -59,6 +59,13 @@ const responseValidationError = (res) => {
         message: 'Validation Error, bad request'
     });
 }
+const responsesOk = (res, units, supervision) => {
+    return res.status(200).json({
+        success: true,
+        units,
+        supervision
+    });
+}
 
 export {
     responseBadRquest,
@@ -69,5 +76,6 @@ export {
     responseBadAuth,
     responseOkUserCreated,
     responseServerError,
-    responseValidationError
+    responseValidationError, 
+    responsesOk
 }

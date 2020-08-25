@@ -62,18 +62,18 @@ class UserData {
       return Response.responseServerError(res);
     }
   }
-  static async getAllUsers(req, res) {
-    const userTypes = ['standard', 'admin', 'super admin'];
-    try {
-      const allUsers = await Db.getAllUsers(User);
-      const adminStandardUsers = allUsers.filter(user => {
-        return userTypes.includes(user.role) && user.username 
-      })
-      return Response.responseOk(res, adminStandardUsers);
-    } catch (error) {
-      return Response.responseNotFound(res);
-    }
-  }
+  // static async getAllUsers(req, res) {
+  //   const userTypes = ['standard', 'admin', 'super admin'];
+  //   try {
+  //     const allUsers = await Db.getAllUsers(User);
+  //     const adminStandardUsers = allUsers.filter(user => {
+  //       return userTypes.includes(user.role) && user.username 
+  //     })
+  //     return Response.responseOk(res, adminStandardUsers);
+  //   } catch (error) {
+  //     return Response.responseNotFound(res);
+  //   }
+  // }
 }
 
 export default UserData;

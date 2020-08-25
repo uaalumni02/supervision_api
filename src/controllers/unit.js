@@ -19,30 +19,6 @@ class AddUnitData {
       return Response.responseServerError(res);
     }
   }
-  static async allUnits(req, res) {
-    try {
-      const getAllUnits = await Db.getAllUnits(Unit);
-      return Response.responseOk(res, getAllUnits);
-    } catch (error) {
-      return Response.responseServerError(res);
-    }
-  }
-  static async getUnitById(req, res) {
-    const { id } = req.params;
-    try {
-      const { error } = validator.validateAsync({ id });
-      if (error) {
-        return Response.responseValidationError(res, Errors.INVALID_ID);
-      }
-      const unitById = await Db.getUnitById(
-        Unit,
-        id
-      );
-      return Response.responseOk(res, unitById);
-    } catch (error) {
-      return Response.responseNotFound(res);
-    }
-  }
 }
 
 export default AddUnitData;

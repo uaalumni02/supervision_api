@@ -15,14 +15,7 @@ class Db {
       throw error;
     }
   }
-  static async getSupervisionTypeById(model, id) {
-    try {
-      const supervisionType = await model.findById(id);
-      return supervisionType;
-    } catch (error) {
-      throw error;
-    }
-  }
+
   static async addUnit(model, data) {
     try {
       const units = await model({ ...data });
@@ -39,14 +32,7 @@ class Db {
       throw error;
     }
   }
-  static async getUnitById(model, id) {
-    try {
-      const unit = await model.findById(id);
-      return unit;
-    } catch (error) {
-      throw error;
-    }
-  }
+
   static async findUser(model, username) {
     try {
       const user = await model.findOne({ username });

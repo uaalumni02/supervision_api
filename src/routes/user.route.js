@@ -11,7 +11,7 @@ router.post("/login", userController.userLogin);
 router
   .route("/")
   .post(userController.addUser)
-  .get(checkAuth, checkIsAdmin, userController.getAllUsers);
+  // .get(checkAuth, checkIsAdmin, userController.getAllUsers);
 
 // router
 //   .route("/:id")
