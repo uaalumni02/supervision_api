@@ -88,6 +88,21 @@ class UserData {
       return Response.responseServerError(res);
     }
   }
+  static async getUserById(req, res) {
+    const { id } = req.params;
+    try {
+      const { error } = validator.validateAsync(id);
+      if (error) {
+        return Response.responseValidationError(res, Errors.INVALID_ID);
+      }
+      const userById = await Db.getUserById(User, id);
+      return userById.length == 0
+        ? Response.responseNotFound(res, Errors.INVALID_USER)
+        : Response.responseOk(res, userById);
+    } catch (error) {
+      return Response.responseServerError(res);
+    }
+  }
 }
 
 export default UserData;

@@ -13,6 +13,9 @@ router
   .post(userController.addUser)
   .get(checkAuth, checkIsAdmin, userController.getAllUsers);
 
-router.route("/:id").delete(checkAuth, checkIsAdmin, userController.deleteUser);
+router
+  .route("/:id")
+  .delete(checkAuth, checkIsAdmin, userController.deleteUser)
+  .get(checkAuth, checkIsAdmin, userController.getUserById);
 
 export default router;
