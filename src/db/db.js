@@ -57,6 +57,14 @@ class Db {
       throw error;
     }
   }
+  static async removeUser(model, id) {
+    try {
+      const deleteUser = await model.findOneAndDelete({ _id: id });
+      return {};
+    } catch (error) {
+      throw error;
+    }
+  }
 }
 
 export default Db;

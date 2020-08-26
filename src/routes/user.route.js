@@ -11,12 +11,8 @@ router.post("/login", userController.userLogin);
 router
   .route("/")
   .post(userController.addUser)
-  // .get(checkAuth, checkIsAdmin, userController.getAllUsers);
+  .get(checkAuth, checkIsAdmin, userController.getAllUsers);
 
-// router
-//   .route("/:id")
-//   .delete(checkAuth, checkIsAdmin, userController.deleteUser)
-//   .patch(checkAuth, checkIsAdmin, userController.approveUser)
-//   .get(checkAuth, checkIsAdmin, userController.getUserById)
+router.route("/:id").delete(checkAuth, checkIsAdmin, userController.deleteUser);
 
 export default router;

@@ -5,7 +5,7 @@ import bcrypt from "../helpers/bcrypt/bcrypt";
 import validator from "../validator/user";
 import Errors from "../helpers/constants/constants";
 import * as Response from "../helpers/response/response";
-
+import { checkAuth } from "../middleware/auth/auth";
 
 class UserData {
   static async addUser(req, res) {
@@ -62,18 +62,32 @@ class UserData {
       return Response.responseServerError(res);
     }
   }
-  // static async getAllUsers(req, res) {
-  //   const userTypes = ['standard', 'admin', 'super admin'];
-  //   try {
-  //     const allUsers = await Db.getAllUsers(User);
-  //     const adminStandardUsers = allUsers.filter(user => {
-  //       return userTypes.includes(user.role) && user.username 
-  //     })
-  //     return Response.responseOk(res, adminStandardUsers);
-  //   } catch (error) {
-  //     return Response.responseNotFound(res);
-  //   }
-  // }
+  static async getAllUsers(req, res) {
+    try {
+      const allUsers = await Db.getAllUsers(User);
+      return Response.responseOk(res, allUsers);
+    } catch (error) {
+      return Response.responseNotFound(res);
+    }
+  }
+  static async deleteUser(req, res) {
+    const { id } = req.params;
+    try {
+      const { error } = validator.validateAsync(id);
+      if (error) {
+        return Response.responseValidationError(res, Errors.INVALID_ID);
+      }
+      const isAuthorized = checkAuth(req);
+      if (isAuthorized) {
+        const userToDelete = await Db.removeUser(User, id);
+        return !userToDelete
+          ? Response.responseNotFound(res, Errors.INVALID_USER)
+          : Response.responseOk(res, userToDelete);
+      }
+    } catch (error) {
+      return Response.responseServerError(res);
+    }
+  }
 }
 
 export default UserData;

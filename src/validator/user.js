@@ -6,12 +6,9 @@ const schema = Joi.object({
     .min(3)
     .max(30)
     .required(),
-  password: Joi.string()
-    .min(3)
-    .max(15),
-  role: Joi.string()
-    .min(3)
-    .max(30),
+  password: Joi.string().min(3).max(15),
+  role: Joi.string().min(3).max(30),
+  id: Joi.string().regex(/^[0-9a-zA-Z]{24}$/i),
 });
 
 export default schema;
