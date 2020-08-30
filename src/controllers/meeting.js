@@ -20,7 +20,15 @@ class AddMeetingData {
     } catch (error) {
       return Response.responseServerError(res);
     }
+  }static async getAllMeetings(req, res) {
+    try {
+      const allMeetings = await Db.getAllMeetings(Meeting);
+      return Response.responseOk(res, allMeetings);
+    } catch (error) {
+      return Response.responseNotFound(res);
+    }
   }
+
 }
 
 export default AddMeetingData

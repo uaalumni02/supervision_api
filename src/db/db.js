@@ -81,6 +81,14 @@ class Db {
       throw error;
     }
   }
+  static async getAllMeetings(model) {
+    try {
+      const allMeetings = await model.find({});
+      return allMeetings;
+    } catch (error) {
+      throw error;
+    }
+  }
 }
 
 export default Db;
