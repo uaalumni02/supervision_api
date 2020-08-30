@@ -89,6 +89,17 @@ class Db {
       throw error;
     }
   }
+  static async getsupervisionByAttendee(model, attendees) {
+    try {
+      const supervison = await model
+        .find({ attendees })
+        .populate("units supervisionType attendees")
+        .exec();
+      return supervison;
+    } catch (error) {
+      throw error;
+    }
+  }
 }
 
 export default Db;

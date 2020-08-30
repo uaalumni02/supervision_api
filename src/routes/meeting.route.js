@@ -9,4 +9,8 @@ router
   .post(checkAuth, meetingController.addMeeting)
   .get(checkAuth, meetingController.getAllMeetings);
 
+router
+  .route("/:attendees")
+  .get(checkAuth, meetingController.getSupervisionByAttendee);
+
 export default router;

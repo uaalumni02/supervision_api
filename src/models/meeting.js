@@ -24,8 +24,8 @@ const meetingSchema = Schema({
   },
   attendees: [
     {
-      type: String,
-      // validate: [arrayLimit, "exceeds the limit of 5"],
+      type: Schema.Types.ObjectId,
+      ref: "User",
       required: true,
     },
   ],
