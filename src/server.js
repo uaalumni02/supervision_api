@@ -16,6 +16,7 @@ import supervisionTypeRoutes from "./routes/supervisionType.route";
 import unitRoutes from "./routes/unit.route";
 import userRoutes from './routes/user.route';
 import supervisionTypeUnitsRoutes from "./routes/supervisionTypesUnits.route";
+import meeetingRoutes from "./routes/meeting.route";
 
 app.use(cors());
 app.use(express.json());
@@ -40,6 +41,7 @@ router.use("/supervision", supervisionTypeRoutes);
 router.use("/unit", unitRoutes);
 router.use('/user', userRoutes);
 router.use('/supervisionUnits', supervisionTypeUnitsRoutes);
+router.use("/meeting", meeetingRoutes);
 
 app.use("/api", router);
 

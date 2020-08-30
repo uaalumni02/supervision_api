@@ -73,6 +73,14 @@ class Db {
       throw error;
     }
   }
+  static async addMeeting(model, data) {
+    try {
+      const newMeeting = await model({ ...data });
+      return newMeeting.save();
+    } catch (error) {
+      throw error;
+    }
+  }
 }
 
 export default Db;

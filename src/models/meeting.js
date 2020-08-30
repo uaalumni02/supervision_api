@@ -4,9 +4,7 @@ const { Schema } = mongoose;
 const meetingSchema = Schema({
   numberOfAttendees: {
     type: String,
-    required: [true, "Number of attendees are required"],
-    min: 2,
-    max: 2,
+       required: true,
   },
   date: {
     type: Number,
@@ -17,29 +15,35 @@ const meetingSchema = Schema({
     required: [true, "content is required"],
     min: 5,
     max: 700,
+    required: true,
   },
   isDeleted: {
     type: Boolean,
     default: false,
+    required: true,
   },
   attendees: [
     {
       type: String,
-      validate: [arrayLimit, "exceeds the limit of 5"],
+      // validate: [arrayLimit, "exceeds the limit of 5"],
+      required: true,
     },
   ],
   units: {
     type: Schema.Types.ObjectId,
     ref: "Unit",
+    required: true,
   },
   supervisionType: {
     type: Schema.Types.ObjectId,
     ref: "SupervisionType",
+    required: true,
   },
   approval: [
     {
-      type: String,
+      type: Schema.Types.ObjectId,
       ref: "User",
+      required: true,
     },
   ],
   __v: {
@@ -48,10 +52,8 @@ const meetingSchema = Schema({
   },
 });
 
-const arrayLimit = (val) => {
-  return val.length <= 5;
-};
+// const arrayLimit = (val) => {
+//   return val.length <= 5;
+// };
 
 export default mongoose.model("Meeting", meetingSchema);
-
-
