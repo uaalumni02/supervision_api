@@ -100,6 +100,14 @@ class Db {
       throw error;
     }
   }
+  static async removeMeeting(model, id) {
+    try {
+      const deleteMeeting = await model.findOneAndDelete({ _id: id });
+      return {};
+    } catch (error) {
+      throw error;
+    }
+  }
 }
 
 export default Db;

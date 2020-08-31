@@ -1,6 +1,7 @@
 import Db from "../db/db";
 import Meeting from "../models/meeting";
 import moment from "moment";
+import { checkAuth } from "../middleware/auth/auth";
 
 // import validator from "../validator/meeting";
 import * as Response from "../helpers/response/response";
@@ -44,6 +45,24 @@ class AddMeetingData {
       return Response.responseOk(res, supervisionByAttendee);
     } catch (error) {
       return Response.responseNotFound(res);
+    }
+  }
+  static async deleteMeeting(req, res) {
+    const { id } = req.params;
+    try {
+      // const { error } = validator.validateAsync(id);
+      // if (error) {
+      //   return Response.responseValidationError(res, Errors.INVALID_ID);
+      // }
+      const isAuthorized = checkAuth(req);
+      if (isAuthorized) {
+        const meetingToDelete = await Db.removeMeeting(Meeting, id);
+        return !meetingToDelete
+          ? Response.responseNotFound(res, Errors.INVALID_MEETING)
+          : Response.responseOk(res, meetingToDelete);
+      }
+    } catch (error) {
+      return Response.responseServerError(res);
     }
   }
 }
