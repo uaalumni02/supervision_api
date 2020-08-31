@@ -4,7 +4,7 @@ const { Schema } = mongoose;
 const meetingSchema = Schema({
   numberOfAttendees: {
     type: String,
-       required: true,
+    required: true,
   },
   date: {
     type: Number,

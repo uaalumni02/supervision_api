@@ -6,8 +6,6 @@ import moment from "moment";
 import * as Response from "../helpers/response/response";
 import Errors from "../helpers/constants/constants";
 
-//how to add multiple attendees *****
-
 class AddMeetingData {
   static async addMeeting(req, res) {
     const meetingData = { ...req.body };
@@ -16,6 +14,11 @@ class AddMeetingData {
       "YYYY-MM-DD hh:mmA"
     ).unix();
     meetingData.date = meetingTimestamp;
+
+    const attendees = meetingData.attendees;
+    const multiplePeople = attendees.split(",");
+    meetingData.attendees = multiplePeople;
+
     try {
       const meetingInfo = await Db.addMeeting(Meeting, meetingData);
       return Response.responseOkCreated(res, meetingInfo);
