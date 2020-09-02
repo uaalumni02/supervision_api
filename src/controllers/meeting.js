@@ -7,7 +7,7 @@ import { checkAuth } from "../middleware/auth/auth";
 import * as Response from "../helpers/response/response";
 import Errors from "../helpers/constants/constants";
 
-class AddMeetingData {
+class MeetingController {
   static async addMeeting(req, res) {
     const meetingData = { ...req.body };
     const meetingTimestamp = moment(
@@ -54,9 +54,10 @@ class AddMeetingData {
       // if (error) {
       //   return Response.responseValidationError(res, Errors.INVALID_ID);
       // }
+      const body = { isDeleted: true };
       const isAuthorized = checkAuth(req);
       if (isAuthorized) {
-        const meetingToDelete = await Db.removeMeeting(Meeting, id);
+        const meetingToDelete = await Db.updateMeeting(Meeting, id, body);
         return !meetingToDelete
           ? Response.responseNotFound(res, Errors.INVALID_MEETING)
           : Response.responseOk(res, meetingToDelete);
@@ -65,6 +66,22 @@ class AddMeetingData {
       return Response.responseServerError(res);
     }
   }
+  static async editMeeting(req, res) {
+    const id = req.params.id;
+    const meetingData = { ...req.body };
+    const meetingTimestamp = moment(
+      meetingData.date,
+      "YYYY-MM-DD hh:mmA"
+    ).unix();
+    meetingData.date = meetingTimestamp;
+
+    try {
+      const meetingToUpdate = await Db.updateMeeting(Meeting, id, meetingData);
+      return Response.responseOk(res, meetingToUpdate);
+    } catch (error) {
+      return Response.responseServerError(res);
+    }
+  }
 }
 
-export default AddMeetingData;
+export default MeetingController;

@@ -108,6 +108,17 @@ class Db {
       throw error;
     }
   }
+  static async updateMeeting(model, meetingId, meetingData) {
+    try {
+      const filter = { _id: meetingId };
+      const updatedMeeting = await model.findOneAndUpdate(filter, meetingData, {
+        new: true,
+      });
+      return updatedMeeting;
+    } catch (error) {
+      throw error;
+    }
+  }
 }
 
 export default Db;

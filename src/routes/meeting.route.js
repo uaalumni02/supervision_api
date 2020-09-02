@@ -11,11 +11,12 @@ router
   .get(checkAuth, meetingController.getAllMeetings);
 
 router
+  .route("/:id")
+  .patch(checkAuth, checkIsAdmin, meetingController.editMeeting)
+  .delete(checkAuth, checkIsAdmin, meetingController.deleteMeeting);
+
+router
   .route("/:attendees")
   .get(checkAuth, meetingController.getSupervisionByAttendee);
-
-  router
-  .route("/:id")
-  .delete(checkAuth, checkIsAdmin, meetingController.deleteMeeting)
 
 export default router;
