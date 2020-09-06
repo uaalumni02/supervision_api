@@ -10,6 +10,7 @@ const schema = Joi.object({
   units: Joi.objectId(),
   supervisionType: Joi.objectId(),
   approval: Joi.objectId(),
+  id: Joi.string().regex(/^[0-9a-fA-F]{24}$/i),
 });
 
 export default schema;
