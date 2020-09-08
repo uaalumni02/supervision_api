@@ -6,6 +6,10 @@ import { checkAuth } from "../middleware/auth/auth";
 import validator from "../validator/meeting";
 import * as Response from "../helpers/response/response";
 import Errors from "../helpers/constants/constants";
+import { compare } from "bcrypt";
+
+//put try catch in helper; pass joi error object
+//passing values as argument not working
 
 class MeetingController {
   static async addMeeting(req, res) {
@@ -32,23 +36,29 @@ class MeetingController {
     }
   }
   static async getAllMeetings(req, res) {
-    try {
-      const allMeetings = await Db.getAllMeetings(Meeting);
+    // try {
+    //   const allMeetings = await Db.getAllMeetings(Meeting);
+    //   return Response.responseOk(res, allMeetings);
+    // } catch (error) {
+    //   return Response.responseServerError(res);
+    // }
+    const allMeetings = await Db.getAllMeetings(Meeting);
+    if (allMeetings) {
       return Response.responseOk(res, allMeetings);
-    } catch (error) {
-      return Response.responseNotFound(res);
+    } else {
+      return Response.responseServerError(res);
     }
   }
   static async getSupervisionByAttendee(req, res) {
-    const { attendees } = req.params;
+    const { attendee } = req.params;
     try {
       const supervisionByAttendee = await Db.getsupervisionByAttendee(
         Meeting,
-        attendees
+        attendee
       );
       return Response.responseOk(res, supervisionByAttendee);
     } catch (error) {
-      return Response.responseNotFound(res);
+      return Response.responseServerError(res);
     }
   }
   static async deleteMeeting(req, res) {

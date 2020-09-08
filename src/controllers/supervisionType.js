@@ -6,6 +6,7 @@ import * as Response from "../helpers/response/response";
 import Errors from "../helpers/constants/constants";
 
 class Supervision {
+  //wrap try catch
   static async addSupervisionType(req, res) {
     const supervisionTypeData = { ...req.body };
     try {

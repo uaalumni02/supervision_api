@@ -16,7 +16,7 @@ router
   .delete(checkAuth, checkIsAdmin, meetingController.deleteMeeting);
 
 router
-  .route("/:attendees")
+  .route("/:attendee")
   .get(checkAuth, meetingController.getSupervisionByAttendee);
 
 export default router;
