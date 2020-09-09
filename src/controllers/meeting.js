@@ -3,13 +3,9 @@ import Meeting from "../models/meeting";
 import moment from "moment";
 import { checkAuth } from "../middleware/auth/auth";
 
-import validator from "../validator/meeting";
+import meetingSchema from "../validator/meeting";
 import * as Response from "../helpers/response/response";
 import Errors from "../helpers/constants/constants";
-import { compare } from "bcrypt";
-
-//put try catch in helper; pass joi error object
-//passing values as argument not working
 
 class MeetingController {
   static async addMeeting(req, res) {
@@ -20,16 +16,16 @@ class MeetingController {
     ).unix();
     meetingData.date = meetingTimestamp;
 
-    const attendees = meetingData.attendees;
-    const multiplePeople = attendees.split(",");
-    meetingData.attendees = multiplePeople;
-
     try {
-      const { error } = validator.validateAsync(meetingData);
+      const { error, value } = meetingSchema.validate(meetingData);
       if (error) {
         return Response.responseBadRequest(res, Errors.VALIDATION);
       }
-      const meetingInfo = await Db.addMeeting(Meeting, meetingData);
+      const attendees = value.attendees;
+      const multiplePeople = attendees.split(",");
+      value.attendees = multiplePeople;
+
+      const meetingInfo = await Db.addMeeting(Meeting, value);
       return Response.responseOkCreated(res, meetingInfo);
     } catch (error) {
       return Response.responseServerError(res);
@@ -64,14 +60,14 @@ class MeetingController {
   static async deleteMeeting(req, res) {
     const { id } = req.params;
     try {
-      const { error } = validator.validateAsync(id);
+      const { error, value } = meetingSchema.validate({id: id});
       if (error) {
         return Response.responseValidationError(res, Errors.INVALID_ID);
       }
       const body = { isDeleted: true };
       const isAuthorized = checkAuth(req);
       if (isAuthorized) {
-        const meetingToDelete = await Db.updateMeeting(Meeting, id, body);
+        const meetingToDelete = await Db.updateMeeting(Meeting, value.id, body);
         return !meetingToDelete
           ? Response.responseNotFound(res, Errors.INVALID_MEETING)
           : Response.responseOk(res, meetingToDelete);
@@ -81,7 +77,7 @@ class MeetingController {
     }
   }
   static async editMeeting(req, res) {
-    const id = req.params.id;
+    const { id } = req.params;
     const meetingData = { ...req.body };
     const meetingTimestamp = moment(
       meetingData.date,
@@ -90,24 +86,25 @@ class MeetingController {
     meetingData.date = meetingTimestamp;
 
     try {
-      const { error } = validator.validate(id);
+      const { error, value } = meetingSchema.validate({id: id});
       if (error) {
         return Response.responseValidationError(res, Errors.INVALID_ID);
       }
       const isAuthorized = checkAuth(req);
       if (isAuthorized) {
-        const { error } = validator.validate(meetingData);
+        const { error } = meetingSchema.validate(meetingData);
         if (error) {
           return Response.responseBadRequest(res, Errors.VALIDATION);
         }
         const meetingToUpdate = await Db.updateMeeting(
           Meeting,
-          id,
+          value.id,
           meetingData
         );
         return Response.responseOk(res, meetingToUpdate);
       }
     } catch (error) {
+      console.log(error)
       return Response.responseServerError(res);
     }
   }

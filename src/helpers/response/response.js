@@ -1,4 +1,4 @@
-const responseBadRquest = (res) => {
+const responseBadRequest = (res) => {
     return res.status(400).json({
         success: false,
         message: 'unable to save provided input'
@@ -68,7 +68,7 @@ const responsesOk = (res, units, supervision) => {
 }
 
 export {
-    responseBadRquest,
+    responseBadRequest,
     responseNotFound,
     responseOkCreated,
     responseOk,

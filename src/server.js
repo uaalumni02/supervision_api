@@ -2,6 +2,7 @@ import express from "express";
 import "dotenv/config";
 import mongoose from "mongoose";
 import cors from "cors";
+// import 'express-async-errors';
 
 const app = express();
 const { log, error } = console;
@@ -22,6 +23,14 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+// app.use((err, req, res, next) => {
+//   if(res.headersSent) {
+//     return next(err)
+//   }
+//   res.status(500)
+//     .json({ error: 'error happened '})
+// });
+
 const DB_URL = process.env.MONGO_URL;
 const TEST_DB_URL = process.env.MONGO_TEST_URL;
 
@@ -36,6 +45,7 @@ if (process.env.NODE_ENV == "test") {
     return log("Connection Successful");
   });
 }
+
 
 router.use("/supervision", supervisionTypeRoutes);
 router.use("/unit", unitRoutes);
