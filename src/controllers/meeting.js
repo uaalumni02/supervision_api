@@ -86,20 +86,20 @@ class MeetingController {
     meetingData.date = meetingTimestamp;
 
     try {
-      const { error, value } = meetingSchema.validate({id: id});
+      const { error, value: IdValue } = meetingSchema.validate({ id });
       if (error) {
         return Response.responseValidationError(res, Errors.INVALID_ID);
       }
       const isAuthorized = checkAuth(req);
       if (isAuthorized) {
-        const { error } = meetingSchema.validate(meetingData);
+        const { error, value } = meetingSchema.validate(meetingData);
         if (error) {
           return Response.responseBadRequest(res, Errors.VALIDATION);
         }
         const meetingToUpdate = await Db.updateMeeting(
           Meeting,
-          value.id,
-          meetingData
+          IdValue.id,
+          value
         );
         return Response.responseOk(res, meetingToUpdate);
       }
