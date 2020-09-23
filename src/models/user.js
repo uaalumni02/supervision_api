@@ -1,3 +1,4 @@
+import { string } from "@hapi/joi";
 import mongoose from "mongoose";
 const { Schema } = mongoose;
 
@@ -9,12 +10,28 @@ const UserSchema = Schema({
     required: [true, "Please enter valid username"],
     validate: [isValidUserName, "Please enter valid username"],
   },
+  firstName: {
+    type: String,
+    required: true,
+  },
+  lastName: {
+    type: String,
+    required: true,
+  },
+  email: {
+    type: String,
+    required: true,
+  },
   password: {
     type: String,
     required: true,
   },
+  role: {
+    type: String,
+    default: "standard"
+  },
 
-  role: { type: String, enum: ["standard", "admin", "super admin"] },
+  // role: { type: String, enum: ["standard", "admin", "super admin"] },
 
   __v: {
     type: Number,

@@ -109,13 +109,11 @@ class Db {
     }
   }
   static async updateMeeting(model, meetingId, meetingData) {
-    console.log("-----------> body",meetingData)
     try {
       const filter = { _id: meetingId };
       const updatedMeeting = await model.findOneAndUpdate(filter, meetingData, {
         new: true,
       });
-      console.log("--->updated data",updatedMeeting)
       return updatedMeeting;
     } catch (error) {
       throw error;

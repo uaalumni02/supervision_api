@@ -9,22 +9,23 @@ import { checkAuth } from "../middleware/auth/auth";
 
 class UserData {
   static async addUser(req, res) {
-    const { username, password, role } = req.body;
+    const { username, password } = req.body;
     try {
-      const { error } = validator.validate(req.body);
-      if (error) {
-        return Response.responseValidationError(res, Errors.VALIDATION);
-      }
+      // const { error } = validator.validate(req.body);
+      // if (error) {
+      //   return Response.responseValidationError(res, Errors.VALIDATION);
+      // }
       const user = await Db.findUser(User, username);
       if (user != null) {
         return Response.responseConflict(res, user);
       } else {
         const hash = await bcrypt.hashPassword(password, 10);
         const user = { ...req.body, password: hash };
-        const { username, _id: userId, role } = await Db.saveUser(User, user);
-        if (role == "admin" || role == "super admin") {
+        const { username, _id: userId, role, firstName, lastName, email } = await Db.saveUser(User, user);
+        if (role == "standard") {
           const token = Token.sign({ username, userId, role });
-          const userData = { username, userId, token, role };
+          const userData = { username, userId, token, role, firstName, lastName, email  };
+          console.log(userData);
           return Response.responseOkUserCreated(res, userData);
         }
       }
