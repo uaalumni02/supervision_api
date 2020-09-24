@@ -21,15 +21,16 @@ class UserData {
       } else {
         const hash = await bcrypt.hashPassword(password, 10);
         const user = { ...req.body, password: hash };
+        console.log(user)
         const { username, _id: userId, role, firstName, lastName, email } = await Db.saveUser(User, user);
         if (role == "standard") {
           const token = Token.sign({ username, userId, role });
           const userData = { username, userId, token, role, firstName, lastName, email  };
-          console.log(userData);
           return Response.responseOkUserCreated(res, userData);
         }
       }
     } catch (error) {
+      console.log(error);
       return Response.responseServerError(res);
     }
   }
@@ -52,7 +53,7 @@ class UserData {
         const token = Token.sign({
           username: user.username,
           userId: user._id,
-          role: user.role,
+          // role: user.role,
         });
         const userData = { user, token };
         return Response.responseOk(res, userData);

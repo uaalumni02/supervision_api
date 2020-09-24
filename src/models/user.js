@@ -28,10 +28,10 @@ const UserSchema = Schema({
   },
   role: {
     type: String,
-    default: "standard"
+    default: "standard",
+    // enum: ["standard", "admin"],
   },
 
-  // role: { type: String, enum: ["standard", "admin", "super admin"] },
 
   __v: {
     type: Number,
