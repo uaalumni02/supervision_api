@@ -66,6 +66,13 @@ const responsesOk = (res, units, supervision) => {
         supervision
     });
 }
+const responseOkUserLoggedIn = (res, userdata) => {
+    return res.status(201).json({
+        success: true,
+        message: "user successfully added",
+        userdata,
+    });
+}
 
 export {
     responseBadRequest,
@@ -77,5 +84,6 @@ export {
     responseOkUserCreated,
     responseServerError,
     responseValidationError, 
-    responsesOk
+    responsesOk,
+    responseOkUserLoggedIn
 }
