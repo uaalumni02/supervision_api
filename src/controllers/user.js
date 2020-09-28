@@ -49,11 +49,13 @@ class UserData {
         user.password
       );
       if (isSamePassword && user.role) {
+
+        const { _id: userId, username, firstName, lastName, email  } = user;
         const token = Token.sign({
-          username: user.username,
-          userId: user._id,
+          username,
+          userId,
         });
-        const userData = { user, token };
+        const userData = { username, userId, firstName, lastName, email, token};
         return Response.responseOkUserLoggedIn(res, userData);
       } else {
         return Response.responseValidationError(res);
