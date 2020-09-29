@@ -40,7 +40,6 @@ class UserData {
         return Response.responseValidationError(res, Errors.VALIDATION);
       }
       const user = await Db.findUser(User, username);
-      console.log(user)
       if (user == null) {
         return Response.responseBadAuth(res, user);
       }
@@ -58,7 +57,7 @@ class UserData {
         const userData = { username, userId, firstName, lastName, email, token};
         return Response.responseOkUserLoggedIn(res, userData);
       } else {
-        return Response.responseValidationError(res);
+        return Response.responseInvalidCredentials(res);
       }
     } catch (error) {
       return Response.responseServerError(res);

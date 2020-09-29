@@ -73,6 +73,12 @@ const responseOkUserLoggedIn = (res, userdata) => {
         userdata,
     });
 }
+const responseInvalidCredentials = (res) => {
+    return res.status(401).json({
+        success: false,
+        message: 'Invalid username or password',
+    });
+}
 
 export {
     responseBadRequest,
@@ -85,5 +91,6 @@ export {
     responseServerError,
     responseValidationError, 
     responsesOk,
-    responseOkUserLoggedIn
+    responseOkUserLoggedIn,
+    responseInvalidCredentials
 }
