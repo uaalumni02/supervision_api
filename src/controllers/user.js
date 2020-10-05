@@ -13,7 +13,7 @@ class UserData {
     try {
       const { error } = validator.validate(req.body);
       if (error) {
-        return Response.responseValidationError(res, Errors.VALIDATION);
+        return Response.responseInvalidPSWDConfirmation (res, Errors.VALIDATION);
       }
       const user = await Db.findUser(User, username);
       if (user != null) {
