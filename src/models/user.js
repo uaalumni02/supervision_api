@@ -1,7 +1,6 @@
 import { string } from "@hapi/joi";
 import mongoose from "mongoose";
 const { Schema } = mongoose;
-
 import isValidUserName from "../helpers/models/user";
 
 const UserSchema = Schema({
@@ -29,10 +28,12 @@ const UserSchema = Schema({
   role: {
     type: String,
     default: "standard",
-    // enum: ["standard", "admin"],
   },
-
-
+  confirmPassword: {
+    type: String,
+    required: true,
+  },
+  
   __v: {
     type: Number,
     select: false,

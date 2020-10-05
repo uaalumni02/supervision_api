@@ -11,20 +11,35 @@ class UserData {
   static async addUser(req, res) {
     const { username, password } = req.body;
     try {
-      // const { error } = validator.validate(req.body);
-      // if (error) {
-      //   return Response.responseValidationError(res, Errors.VALIDATION);
-      // }
+      const { error } = validator.validate(req.body);
+      if (error) {
+        return Response.responseValidationError(res, Errors.VALIDATION);
+      }
       const user = await Db.findUser(User, username);
       if (user != null) {
         return Response.responseConflict(res, user);
       } else {
         const hash = await bcrypt.hashPassword(password, 10);
         const user = { ...req.body, password: hash };
-        const { username, _id: userId, role, firstName, lastName, email } = await Db.saveUser(User, user);
+        const {
+          username,
+          _id: userId,
+          role,
+          firstName,
+          lastName,
+          email,
+        } = await Db.saveUser(User, user);
         if (role == "standard") {
           const token = Token.sign({ username, userId, role });
-          const userData = { username, userId, token, role, firstName, lastName, email  };
+          const userData = {
+            username,
+            userId,
+            token,
+            role,
+            firstName,
+            lastName,
+            email,
+          };
           return Response.responseOkUserCreated(res, userData);
         }
       }
@@ -48,13 +63,19 @@ class UserData {
         user.password
       );
       if (isSamePassword && user.role) {
-
-        const { _id: userId, username, firstName, lastName, email  } = user;
+        const { _id: userId, username, firstName, lastName, email } = user;
         const token = Token.sign({
           username,
           userId,
         });
-        const userData = { username, userId, firstName, lastName, email, token};
+        const userData = {
+          username,
+          userId,
+          firstName,
+          lastName,
+          email,
+          token,
+        };
         return Response.responseOkUserLoggedIn(res, userData);
       } else {
         return Response.responseInvalidCredentials(res);
