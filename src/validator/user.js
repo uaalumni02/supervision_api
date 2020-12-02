@@ -11,21 +11,24 @@ const schema = Joi.object({
   firstName: Joi.string()
     .regex(/^([A-Za-z]+[,.]?[ ]?|[A-Za-z]+['-]?)+$/)
     .min(3)
-    .max(15)
-    .required(),
+    .max(15),
+    // .required(),
   lastName: Joi.string()
     .regex(/^([A-Za-z]+[,.]?[ ]?|[A-Za-z]+['-]?)+$/)
     .min(3)
-    .max(15)
-    .required(),
+    .max(15),
+    // .required(),
   email: Joi.string()
     .regex(/[a-z0-9\._%+!$&*=^|~#%'`?{}/\-]+@([a-z0-9\-]+\.){1,}([a-z]{2,16})/)
     .min(3)
-    .max(30)
-    .required(),
+    .max(30),
+    // .required(),
   password: Joi.string().min(3).max(15),
-  confirmPassword: Joi.string().required().valid(Joi.ref("password")),
+  //add required back to confirm pswd
+  confirmPassword: Joi.string().valid(Joi.ref("password")),
   id: Joi.string().regex(/^[0-9a-zA-Z]{24}$/i),
 });
+
+//may need separate validator for register as it requires more fields
 
 export default schema;

@@ -28,6 +28,7 @@ class MeetingController {
       const meetingInfo = await Db.addMeeting(Meeting, value);
       return Response.responseOkCreated(res, meetingInfo);
     } catch (error) {
+      console.log(error)
       return Response.responseServerError(res);
     }
   }

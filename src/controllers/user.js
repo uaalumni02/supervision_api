@@ -13,7 +13,7 @@ class UserData {
     try {
       const { error } = validator.validate(req.body);
       if (error) {
-        return Response.responseInvalidPSWDConfirmation (res, Errors.VALIDATION);
+        return Response.responseInvalidPSWDConfirmation(res, Errors.VALIDATION);
       }
       const user = await Db.findUser(User, username);
       if (user != null) {
@@ -52,7 +52,7 @@ class UserData {
     try {
       const { error } = validator.validate(req.body);
       if (error) {
-        return Response.responseValidationError(res, Errors.VALIDATION);
+        return Response.responseInvalidCredentials(res, Errors.VALIDATION);
       }
       const user = await Db.findUser(User, username);
       if (user == null) {
@@ -121,6 +121,18 @@ class UserData {
       return userById.length == 0
         ? Response.responseNotFound(res, Errors.INVALID_USER)
         : Response.responseOk(res, userById);
+    } catch (error) {
+      return Response.responseServerError(res);
+    }
+  }
+  static async userPasswordReset(req, res) {
+    const { email } = req.body;
+    try {
+      const user = await Db.findUserReset(User, email);
+      if (user == null) {
+        return Response.responseBadAuth(res, user);
+      }
+      return Response.responseOk(res, user);
     } catch (error) {
       return Response.responseServerError(res);
     }

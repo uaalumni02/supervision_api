@@ -119,6 +119,14 @@ class Db {
       throw error;
     }
   }
+  static async findUserReset(model, email) {
+    try {
+      const user = await model.findOne({ email });
+      return user;
+    } catch (error) {
+      throw error;
+    }
+  }
 }
 
 export default Db;

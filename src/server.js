@@ -18,18 +18,12 @@ import unitRoutes from "./routes/unit.route";
 import userRoutes from './routes/user.route';
 import supervisionTypeUnitsRoutes from "./routes/supervisionTypesUnits.route";
 import meeetingRoutes from "./routes/meeting.route";
+import userResetRoutes from "./routes/userReset.route";
 
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// app.use((err, req, res, next) => {
-//   if(res.headersSent) {
-//     return next(err)
-//   }
-//   res.status(500)
-//     .json({ error: 'error happened '})
-// });
 
 const DB_URL = process.env.MONGO_URL;
 const TEST_DB_URL = process.env.MONGO_TEST_URL;
@@ -52,6 +46,7 @@ router.use("/unit", unitRoutes);
 router.use('/user', userRoutes);
 router.use('/supervisionUnits', supervisionTypeUnitsRoutes);
 router.use("/meeting", meeetingRoutes);
+router.use('/reset', userResetRoutes);
 
 app.use("/api", router);
 
