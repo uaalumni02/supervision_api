@@ -29,6 +29,7 @@ const UserSchema = Schema({
     type: String,
     default: "standard",
   },
+  uuid: { type: String },
   __v: {
     type: Number,
     select: false,

@@ -127,6 +127,15 @@ class Db {
       throw error;
     }
   }
+  static async addResetString(model, uuid) {
+    console.log("___________",uuid)
+    try {
+      const resetString = await model(uuid);
+      return resetString.save();
+    } catch (error) {
+      throw error;
+    }
+  }
 }
 
 export default Db;

@@ -6,6 +6,7 @@ import validator from "../validator/user";
 import Errors from "../helpers/constants/constants";
 import * as Response from "../helpers/response/response";
 import { checkAuth } from "../middleware/auth/auth";
+var nodeUuid = require("node-uuid");
 
 class UserData {
   static async addUser(req, res) {
@@ -127,13 +128,18 @@ class UserData {
   }
   static async userPasswordReset(req, res) {
     const { email } = req.body;
+    const uuid = nodeUuid.v4();
+
     try {
       const user = await Db.findUserReset(User, email);
       if (user == null) {
         return Response.responseBadAuth(res, user);
       }
       return Response.responseOk(res, user);
+      // const resetString = await Db.addResetString(User, uuid);
+      // return Response.responseOk(res, resetString);
     } catch (error) {
+      console.log(error);
       return Response.responseServerError(res);
     }
   }
