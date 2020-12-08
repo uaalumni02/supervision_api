@@ -7,7 +7,7 @@ import Errors from "../helpers/constants/constants";
 import * as Response from "../helpers/response/response";
 import { checkAuth } from "../middleware/auth/auth";
 
-import CryptoJS from "crypto-js";
+import crypto from "crypto";
 
 class UserData {
   static async addUser(req, res) {
@@ -129,14 +129,11 @@ class UserData {
   }
   static async userPasswordReset(req, res) {
     const { email } = req.body;
-    let hash = CryptoJS.SHA256("Message");
-    let reset_token = hash.toString(CryptoJS.enc.Hex);
-    console.log(reset_token)
+    let reset_token = crypto.randomBytes(20).toString("hex");
     try {
       const userToReset = await Db.findUserReset(User, email);
       if (userToReset == null) {
-        //return somethng like user not found instead of bad auth
-        return Response.responseBadAuth(res, userToReset);
+        return Response.responseUserNotFound(res, Errors.INVALID_USER);
       }
       const reset = await Db.saveResetString(
         User,
@@ -155,5 +152,5 @@ export default UserData;
 
 /**
  * Subject: ***: Password Reset
- * Body: Click on link to rset password: <a href="wwww.whattht.com/reset/76t3roydughjfhrehfjdbnmcfhgjdbcejfdnmbschejkfdscmnfec">Rest Password </> 
+ * Body: Click on link to rset password: <a href="wwww.whattht.com/reset/76t3roydughjfhrehfjdbnmcfhgjdbcejfdnmbschejkfdscmnfec">Rest Password </>
  */

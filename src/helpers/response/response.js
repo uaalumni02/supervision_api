@@ -85,6 +85,13 @@ const responseInvalidPSWDConfirmation = (res) => {
         message: 'Passwords do not match',
     });
 }
+const responseUserNotFound = (res) => {
+    return res.status(404).json({
+        success: false,
+        message: 'User Not Found'
+    });
+}
+
 
 export {
     responseBadRequest,
@@ -99,5 +106,6 @@ export {
     responsesOk,
     responseOkUserLoggedIn,
     responseInvalidCredentials,
-    responseInvalidPSWDConfirmation
+    responseInvalidPSWDConfirmation,
+    responseUserNotFound
 }
