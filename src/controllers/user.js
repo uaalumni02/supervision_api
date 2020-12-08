@@ -6,7 +6,8 @@ import validator from "../validator/user";
 import Errors from "../helpers/constants/constants";
 import * as Response from "../helpers/response/response";
 import { checkAuth } from "../middleware/auth/auth";
-var nodeUuid = require("node-uuid");
+
+import CryptoJS from "crypto-js";
 
 class UserData {
   static async addUser(req, res) {
@@ -128,21 +129,31 @@ class UserData {
   }
   static async userPasswordReset(req, res) {
     const { email } = req.body;
-    const uuid = nodeUuid.v4();
-
+    let hash = CryptoJS.SHA256("Message");
+    let reset_token = hash.toString(CryptoJS.enc.Hex);
+    console.log(reset_token)
     try {
-      const user = await Db.findUserReset(User, email);
-      if (user == null) {
-        return Response.responseBadAuth(res, user);
+      const userToReset = await Db.findUserReset(User, email);
+      if (userToReset == null) {
+        //return somethng like user not found instead of bad auth
+        return Response.responseBadAuth(res, userToReset);
       }
-      return Response.responseOk(res, user);
-      // const resetString = await Db.addResetString(User, uuid);
-      // return Response.responseOk(res, resetString);
+      const reset = await Db.saveResetString(
+        User,
+        userToReset._id,
+        reset_token
+      );
+      // Send user an email with the reset token
+      return Response.responseOk(res, reset);
     } catch (error) {
-      console.log(error);
       return Response.responseServerError(res);
     }
   }
 }
 
 export default UserData;
+
+/**
+ * Subject: ***: Password Reset
+ * Body: Click on link to rset password: <a href="wwww.whattht.com/reset/76t3roydughjfhrehfjdbnmcfhgjdbcejfdnmbschejkfdscmnfec">Rest Password </> 
+ */

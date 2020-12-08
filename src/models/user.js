@@ -29,7 +29,7 @@ const UserSchema = Schema({
     type: String,
     default: "standard",
   },
-  uuid: { type: String },
+  reset_token: { type: String },
   __v: {
     type: Number,
     select: false,

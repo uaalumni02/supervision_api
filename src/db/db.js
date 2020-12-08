@@ -127,11 +127,21 @@ class Db {
       throw error;
     }
   }
-  static async addResetString(model, uuid) {
-    console.log("___________",uuid)
+
+  static async saveResetString(model, userToReset, reset_token) {
+    // console.log("------------", reset_token);
     try {
-      const resetString = await model(uuid);
-      return resetString.save();
+      const filter = { _id: userToReset._id };
+      // console.log("-------",filter)
+      const addResetString = await model.findOneAndUpdate(
+        filter,
+        { reset_token },
+        {
+          new: true,
+        }
+      );
+      console.log(addResetString);
+      return addResetString;
     } catch (error) {
       throw error;
     }

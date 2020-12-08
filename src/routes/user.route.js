@@ -17,5 +17,6 @@ router
   .route("/:id")
   .delete(checkAuth, checkIsAdmin, userController.deleteUser)
   .get(checkAuth, checkIsAdmin, userController.getUserById);
+  
 
 export default router;

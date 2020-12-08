@@ -8,4 +8,8 @@ const router = express.Router();
 
 router.route("/").post(userController.userPasswordReset);
 
+// router
+//   .route("/:id")
+//   .patch( userController.userPasswordReset)
+
 export default router;

@@ -105,7 +105,6 @@ class MeetingController {
         return Response.responseOk(res, meetingToUpdate);
       }
     } catch (error) {
-      console.log(error)
       return Response.responseServerError(res);
     }
   }
