@@ -6,7 +6,7 @@ import validator from "../validator/user";
 import Errors from "../helpers/constants/constants";
 import * as Response from "../helpers/response/response";
 import { checkAuth } from "../middleware/auth/auth";
-
+import gmail from "node-gmailer";
 import crypto from "crypto";
 
 class UserData {
@@ -140,7 +140,24 @@ class UserData {
         userToReset._id,
         reset_token
       );
-      // Send user an email with the reset token
+
+      const resetMessage =
+        "Click on link to reset password: " +
+        "https://www.supervision.com/reset/" +
+        reset_token;
+
+      const recipient = process.env.GMAIL_ADDRESS;
+      const messageData = {
+        subject: "Password Reset",
+        text: resetMessage,
+      };
+      const sendHandler = () => {
+        gmail
+          .send(recipient, messageData)
+          .then((response) => {})
+          .catch((error) => {});
+      };
+      sendHandler();
       return Response.responseOk(res, reset);
     } catch (error) {
       return Response.responseServerError(res);
@@ -149,8 +166,3 @@ class UserData {
 }
 
 export default UserData;
-
-/**
- * Subject: ***: Password Reset
- * Body: Click on link to rset password: <a href="wwww.whattht.com/reset/76t3roydughjfhrehfjdbnmcfhgjdbcejfdnmbschejkfdscmnfec">Rest Password </>
- */
