@@ -142,27 +142,28 @@ class UserData {
         userToReset._id,
         reset_token
       );
-      //make post request thats updates pswd given the reset string
-      // find by reset pswd
-      // POST: /reset/ytreu763r87rduirekfhjfjkefd
-      //         - newpassword
-      //         - confirmNew password
-      //validations for pswd (compare using joi)
-
+      
       sendHandler(reset_token);
       return Response.responseOk(res, reset);
     } catch (error) {
       return Response.responseServerError(res);
     }
   }
+  //pswd is updating what about confirm? see log from db file
   static async updatePassword(req, res) {
     const { reset_token } = req.params;
+    const { password } = req.body;
     try {
-      const userToReset = await Db.findUserByResetString(User, reset_token);
-      console.log(userToReset);
+      const userToReset = await Db.userResetStringToUpdate(User, reset_token);
       if (userToReset == null) {
         return Response.responseUserNotFound(res, Errors.INVALID_USER);
       }
+      const updatedPassword = await Db.saveUpdatedPassword(
+        User,
+        userToReset._id,
+        password,
+      );
+      return Response.responseOk(res, updatedPassword);
     } catch (error) {
       return Response.responseServerError(res);
     }

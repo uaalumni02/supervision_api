@@ -151,6 +151,30 @@ class Db {
       throw error;
     }
   }
+  static async saveUpdatedPassword(model, userToReset, password) {
+    try {
+      const filter = { _id: userToReset._id };
+      const updatedPassword = await model.findOneAndUpdate(
+        filter,
+        { password },
+        {
+          new: true,
+        }
+      );
+      console.log(updatedPassword)
+      return updatedPassword;
+    } catch (error) {
+      throw error;
+    }
+  }
+  static async userResetStringToUpdate(model, reset_token) {
+    try {
+      const user = await model.findOne(reset_token);
+      return user;
+    } catch (error) {
+      throw error;
+    }
+  }
 }
 
 export default Db;
