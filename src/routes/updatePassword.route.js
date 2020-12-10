@@ -6,8 +6,6 @@ import userController from "../controllers/user";
 
 const router = express.Router();
 
-router.route("/").post(userController.userPasswordReset);
-
-
+router.route("/:resetToken").post(userController.updatePassword);
 
 export default router;

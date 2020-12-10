@@ -2,7 +2,6 @@ import express from "express";
 import "dotenv/config";
 import mongoose from "mongoose";
 import cors from "cors";
-// import 'express-async-errors';
 
 const app = express();
 const { log, error } = console;
@@ -15,15 +14,15 @@ const router = express.Router();
 
 import supervisionTypeRoutes from "./routes/supervisionType.route";
 import unitRoutes from "./routes/unit.route";
-import userRoutes from './routes/user.route';
+import userRoutes from "./routes/user.route";
 import supervisionTypeUnitsRoutes from "./routes/supervisionTypesUnits.route";
 import meeetingRoutes from "./routes/meeting.route";
 import userResetRoutes from "./routes/userReset.route";
+import updatePasswordRoutes from "./routes/updatePassword.route";
 
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-
 
 const DB_URL = process.env.MONGO_URL;
 const TEST_DB_URL = process.env.MONGO_TEST_URL;
@@ -40,13 +39,13 @@ if (process.env.NODE_ENV == "test") {
   });
 }
 
-
 router.use("/supervision", supervisionTypeRoutes);
 router.use("/unit", unitRoutes);
-router.use('/user', userRoutes);
-router.use('/supervisionUnits', supervisionTypeUnitsRoutes);
+router.use("/user", userRoutes);
+router.use("/supervisionUnits", supervisionTypeUnitsRoutes);
 router.use("/meeting", meeetingRoutes);
-router.use('/reset', userResetRoutes);
+router.use("/reset", userResetRoutes);
+router.use("/updatePassword", updatePasswordRoutes);
 
 app.use("/api", router);
 

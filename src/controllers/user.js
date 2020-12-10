@@ -155,6 +155,18 @@ class UserData {
       return Response.responseServerError(res);
     }
   }
+  static async updatePassword(req, res) {
+    const { reset_token } = req.params;
+    try {
+      const userToReset = await Db.findUserByResetString(User, reset_token);
+      console.log(userToReset);
+      if (userToReset == null) {
+        return Response.responseUserNotFound(res, Errors.INVALID_USER);
+      }
+    } catch (error) {
+      return Response.responseServerError(res);
+    }
+  }
 }
 
 export default UserData;

@@ -143,6 +143,14 @@ class Db {
       throw error;
     }
   }
+  static async findUserByResetString(model, reset_token) {
+    try {
+      const user = await model.findOne({ reset_token });
+      return user;
+    } catch (error) {
+      throw error;
+    }
+  }
 }
 
 export default Db;
