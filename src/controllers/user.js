@@ -9,6 +9,8 @@ import { checkAuth } from "../middleware/auth/auth";
 import gmail from "node-gmailer";
 import crypto from "crypto";
 
+import sendHandler from "../helpers/email/mailer";
+
 class UserData {
   static async addUser(req, res) {
     const { username, password } = req.body;
@@ -140,24 +142,14 @@ class UserData {
         userToReset._id,
         reset_token
       );
+      //make post request thats updates pswd given the reset string
+      // find by reset pswd
+      // POST: /reset/ytreu763r87rduirekfhjfjkefd
+      //         - newpassword
+      //         - confirmNew password
+      //validations for pswd (compare using joi)
 
-      const resetMessage =
-        "Click on link to reset password: " +
-        "https://www.supervision.com/reset/" +
-        reset_token;
-
-      const recipient = process.env.GMAIL_ADDRESS;
-      const messageData = {
-        subject: "Password Reset",
-        text: resetMessage,
-      };
-      const sendHandler = () => {
-        gmail
-          .send(recipient, messageData)
-          .then((response) => {})
-          .catch((error) => {});
-      };
-      sendHandler();
+      sendHandler(reset_token);
       return Response.responseOk(res, reset);
     } catch (error) {
       return Response.responseServerError(res);
