@@ -128,12 +128,12 @@ class Db {
     }
   }
 
-  static async saveResetString(model, userToReset, reset_token) {
+  static async saveResetString(model, userToReset, reset_token, currentTime) {
     try {
       const filter = { _id: userToReset._id };
       const addResetString = await model.findOneAndUpdate(
         filter,
-        { reset_token },
+        { reset_token, currentTime },
         {
           new: true,
         }
@@ -161,7 +161,6 @@ class Db {
           new: true,
         }
       );
-      console.log(updatedPassword)
       return updatedPassword;
     } catch (error) {
       throw error;

@@ -30,6 +30,7 @@ const UserSchema = Schema({
     default: "standard",
   },
   reset_token: { type: String },
+  currentTime: { type: Number },
   __v: {
     type: Number,
     select: false,

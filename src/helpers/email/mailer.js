@@ -2,7 +2,6 @@ import gmail from "node-gmailer";
 
 const recipient = process.env.GMAIL_ADDRESS;
 const sendHandler = (reset_token) => {
-  console.log(reset_token);
   gmail
     .send(recipient, {
       subject: "Password Reset",

@@ -6,8 +6,9 @@ import validator from "../validator/user";
 import Errors from "../helpers/constants/constants";
 import * as Response from "../helpers/response/response";
 import { checkAuth } from "../middleware/auth/auth";
-import gmail from "node-gmailer";
+// import gmail from "node-gmailer";
 import crypto from "crypto";
+import moment from "moment"
 
 import sendHandler from "../helpers/email/mailer";
 
@@ -137,10 +138,15 @@ class UserData {
       if (userToReset == null) {
         return Response.responseUserNotFound(res, Errors.INVALID_USER);
       }
+      if(reset_token){
+      var currentTime = moment().unix();  
+      console.log(currentTime)
+    }
       const reset = await Db.saveResetString(
         User,
         userToReset._id,
-        reset_token
+        reset_token,
+        currentTime
       );
       
       sendHandler(reset_token);
@@ -149,12 +155,14 @@ class UserData {
       return Response.responseServerError(res);
     }
   }
-  //pswd is updating what about confirm? see log from db file
+
   static async updatePassword(req, res) {
     const { reset_token } = req.params;
     const { password } = req.body;
     try {
       const userToReset = await Db.userResetStringToUpdate(User, reset_token);
+
+      //store time that reset link was obtained; compare that time with current time to ensure it is not greater than 30 min
       if (userToReset == null) {
         return Response.responseUserNotFound(res, Errors.INVALID_USER);
       }
@@ -163,6 +171,7 @@ class UserData {
         userToReset._id,
         password,
       );
+      //when pswd is updated; reset link needs to be deleted from DB
       return Response.responseOk(res, updatedPassword);
     } catch (error) {
       return Response.responseServerError(res);
