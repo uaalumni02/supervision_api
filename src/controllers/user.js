@@ -6,12 +6,12 @@ import validator from "../validator/user";
 import Errors from "../helpers/constants/constants";
 import * as Response from "../helpers/response/response";
 import { checkAuth } from "../middleware/auth/auth";
-// import gmail from "node-gmailer";
 import crypto from "crypto";
-import moment from "moment"
+import moment from "moment";
 
 import sendHandler from "../helpers/email/mailer";
 
+let currentTime = moment().unix();
 class UserData {
   static async addUser(req, res) {
     const { username, password } = req.body;
@@ -138,41 +138,40 @@ class UserData {
       if (userToReset == null) {
         return Response.responseUserNotFound(res, Errors.INVALID_USER);
       }
-      if(reset_token){
-      var currentTime = moment().unix();  
-      console.log(currentTime)
-    }
+      if (reset_token) {
+        currentTime;
+      }
       const reset = await Db.saveResetString(
         User,
         userToReset._id,
         reset_token,
         currentTime
       );
-      
       sendHandler(reset_token);
       return Response.responseOk(res, reset);
     } catch (error) {
       return Response.responseServerError(res);
     }
   }
-
+//see log pswd is updating...what about confirm pswd..that on done on the front/different route
   static async updatePassword(req, res) {
     const { reset_token } = req.params;
     const { password } = req.body;
     try {
       const userToReset = await Db.userResetStringToUpdate(User, reset_token);
-
-      //store time that reset link was obtained; compare that time with current time to ensure it is not greater than 30 min
       if (userToReset == null) {
         return Response.responseUserNotFound(res, Errors.INVALID_USER);
       }
-      const updatedPassword = await Db.saveUpdatedPassword(
-        User,
-        userToReset._id,
-        password,
-      );
+      let halfAnHourAgo = moment().subtract(30, "minutes").toDate().getTime();
+      if (currentTime < halfAnHourAgo) {
+        const updatedPassword = await Db.saveUpdatedPassword(
+          User,
+          userToReset._id,
+          password
+        );
+        return Response.responseOk(res, updatedPassword);
+      }
       //when pswd is updated; reset link needs to be deleted from DB
-      return Response.responseOk(res, updatedPassword);
     } catch (error) {
       return Response.responseServerError(res);
     }

@@ -161,6 +161,7 @@ class Db {
           new: true,
         }
       );
+      console.log(updatedPassword)
       return updatedPassword;
     } catch (error) {
       throw error;
