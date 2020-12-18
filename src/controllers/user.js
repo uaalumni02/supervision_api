@@ -11,7 +11,6 @@ import moment from "moment";
 
 import sendHandler from "../helpers/email/mailer";
 
-// let currentTime = moment().unix();
 class UserData {
   static async addUser(req, res) {
     const { username, password } = req.body;
@@ -132,16 +131,12 @@ class UserData {
   }
   static async userPasswordReset(req, res) {
     const { email } = req.body;
-    // let currentTime = moment().unix();
     let reset_token = crypto.randomBytes(20).toString("hex");
     try {
       const userToReset = await Db.findUserReset(User, email);
       if (userToReset == null) {
         return Response.responseUserNotFound(res, Errors.INVALID_USER);
       }
-      // if (reset_token) {
-      //   currentTime;
-      // }
       const reset = await Db.saveResetString(
         User,
         userToReset._id,
@@ -154,7 +149,6 @@ class UserData {
       return Response.responseServerError(res);
     }
   }
-  //see log pswd is updating...what about confirm pswd..that was done on the front/different route??
   static async updatePassword(req, res) {
     const { reset_token } = req.params;
     const { password } = req.body;
@@ -163,20 +157,16 @@ class UserData {
       if (userToReset == null) {
         return Response.responseUserNotFound(res, Errors.INVALID_USER);
       }
-      if (
-        moment().diff(moment.unix(userToReset.currentTime), "minutes") <= 30
-      ) {
+      if (moment().diff(moment.unix(userToReset.currentTime), "minutes") <= 1) {
         const updatedPassword = await Db.saveUpdatedPassword(
           User,
           userToReset._id,
           password,
           reset_token
         );
-        // if reset token is expired needs response to say so
-        // delete updatedPassword.reset_token
         return Response.responseOk(res, updatedPassword);
       }
-      //when pswd is updated; reset link needs to be deleted from DB
+      return Response.responseTokenExpired(res);
     } catch (error) {
       return Response.responseServerError(res);
     }

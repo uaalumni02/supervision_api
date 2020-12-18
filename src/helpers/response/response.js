@@ -91,7 +91,12 @@ const responseUserNotFound = (res) => {
         message: 'User Not Found'
     });
 }
-
+const responseTokenExpired = (res) => {
+    return res.status(401).json({
+        success: false,
+        message: 'Reset token has expired',
+    });
+}
 
 export {
     responseBadRequest,
@@ -107,5 +112,6 @@ export {
     responseOkUserLoggedIn,
     responseInvalidCredentials,
     responseInvalidPSWDConfirmation,
-    responseUserNotFound
+    responseUserNotFound,
+    responseTokenExpired 
 }
