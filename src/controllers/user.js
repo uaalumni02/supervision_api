@@ -162,14 +162,17 @@ class UserData {
       const userToReset = await Db.userResetStringToUpdate(User, reset_token);
       if (userToReset == null) {
         return Response.responseUserNotFound(res, Errors.INVALID_USER);
-      } 
-      if (moment().diff(moment.unix(userToReset.currentTime), 'minutes') <= 30) {
+      }
+      if (
+        moment().diff(moment.unix(userToReset.currentTime), "minutes") <= 30
+      ) {
         const updatedPassword = await Db.saveUpdatedPassword(
           User,
           userToReset._id,
-          password
+          password,
+          reset_token
         );
-        //reset token to needs to be updated to empty string or null; if reset token is expired needs response to say so 
+        // if reset token is expired needs response to say so
         // delete updatedPassword.reset_token
         return Response.responseOk(res, updatedPassword);
       }

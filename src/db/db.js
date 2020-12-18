@@ -151,17 +151,17 @@ class Db {
       throw error;
     }
   }
-  static async saveUpdatedPassword(model, userToReset, password) {
+  static async saveUpdatedPassword(model, userToReset, password, reset_token) {
     try {
       const filter = { _id: userToReset._id };
       const updatedPassword = await model.findOneAndUpdate(
         filter,
-        { password },
+        { password, reset_token: null },
         {
           new: true,
         }
       );
-      console.log(updatedPassword)
+      console.log(updatedPassword);
       return updatedPassword;
     } catch (error) {
       throw error;
