@@ -144,7 +144,7 @@ class UserData {
         moment().unix()
       );
       sendHandler(reset_token);
-      return Response.responseOk(res, reset);
+      return Response.responseOkTokenCreated (res);
     } catch (error) {
       return Response.responseServerError(res);
     }
@@ -157,7 +157,7 @@ class UserData {
       if (userToReset == null) {
         return Response.responseUserNotFound(res, Errors.INVALID_USER);
       }
-      if (moment().diff(moment.unix(userToReset.currentTime), "minutes") <= 1) {
+      if (moment().diff(moment.unix(userToReset.currentTime), "minutes") <= 30) {
         const updatedPassword = await Db.saveUpdatedPassword(
           User,
           userToReset._id,

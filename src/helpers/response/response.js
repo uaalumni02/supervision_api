@@ -97,6 +97,13 @@ const responseTokenExpired = (res) => {
         message: 'Reset token has expired',
     });
 }
+const responseOkTokenCreated = (res, data) => {
+    return res.status(201).json({
+        success: true,
+        message: "reset token created",
+        data
+    });
+}
 
 export {
     responseBadRequest,
@@ -113,5 +120,6 @@ export {
     responseInvalidCredentials,
     responseInvalidPSWDConfirmation,
     responseUserNotFound,
-    responseTokenExpired 
+    responseTokenExpired,
+    responseOkTokenCreated 
 }
