@@ -100,7 +100,7 @@ const responseTokenExpired = (res) => {
 const responseOkTokenCreated = (res, data) => {
     return res.status(201).json({
         success: true,
-        message: "reset token created",
+        message: "reset email sent",
         data
     });
 }
