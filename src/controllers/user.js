@@ -135,7 +135,7 @@ class UserData {
     try {
       const userToReset = await Db.findUserReset(User, email);
       if (userToReset == null) {
-        return Response.responseUserNotFound(res, Errors.INVALID_USER);
+        return Response.responseEmailNotFound(res);
       }
       const reset = await Db.saveResetString(
         User,

@@ -100,11 +100,16 @@ const responseTokenExpired = (res) => {
 const responseOkTokenCreated = (res, data) => {
     return res.status(201).json({
         success: true,
-        message: "reset email sent",
+        message: "Will send reset link to email",
         data
     });
 }
-
+const responseEmailNotFound = (res) => {
+    return res.status(404).json({
+        success: false,
+        message: "Will send reset link to email"
+    });
+}
 export {
     responseBadRequest,
     responseNotFound,
@@ -121,5 +126,6 @@ export {
     responseInvalidPSWDConfirmation,
     responseUserNotFound,
     responseTokenExpired,
-    responseOkTokenCreated 
+    responseOkTokenCreated,
+    responseEmailNotFound
 }
