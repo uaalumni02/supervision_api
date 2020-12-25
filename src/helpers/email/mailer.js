@@ -7,7 +7,7 @@ const sendHandler = (reset_token) => {
       subject: "Password Reset",
       text:
         "Click on link to reset password: " +
-        "https://www.supervision.com/reset/" +
+        "http://localhost:3001/reset/" +
         reset_token,
     })
     .then((response) => {})
