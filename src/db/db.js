@@ -44,6 +44,7 @@ class Db {
   static async saveUser(model, user) {
     try {
       const newUser = await model({ ...user });
+      console.log(newUser)
       return newUser.save();
     } catch (error) {
       throw error;

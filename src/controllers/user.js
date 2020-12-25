@@ -48,6 +48,7 @@ class UserData {
         }
       }
     } catch (error) {
+      console.log(error)
       return Response.responseServerError(res);
     }
   }
@@ -85,6 +86,7 @@ class UserData {
         return Response.responseInvalidCredentials(res);
       }
     } catch (error) {
+      console.log(error)
       return Response.responseServerError(res);
     }
   }
@@ -144,7 +146,7 @@ class UserData {
         moment().unix()
       );
       sendHandler(reset_token);
-      return Response.responseOkTokenCreated (res);
+      return Response.responseOkTokenCreated(res);
     } catch (error) {
       return Response.responseServerError(res);
     }
@@ -153,11 +155,18 @@ class UserData {
     const { reset_token } = req.params;
     const { password } = req.body;
     try {
+      const { error } = validator.validate(req.body);
+      // console.log(error)
+      if (error) {
+        return Response.responseInvalidPSWDConfirmation(res, Errors.VALIDATION);
+      }
       const userToReset = await Db.userResetStringToUpdate(User, reset_token);
       if (userToReset == null) {
         return Response.responseUserNotFound(res, Errors.INVALID_USER);
       }
-      if (moment().diff(moment.unix(userToReset.currentTime), "minutes") <= 30) {
+      if (
+        moment().diff(moment.unix(userToReset.currentTime), "minutes") <= 30
+      ) {
         const updatedPassword = await Db.saveUpdatedPassword(
           User,
           userToReset._id,
