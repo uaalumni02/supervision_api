@@ -44,7 +44,6 @@ class Db {
   static async saveUser(model, user) {
     try {
       const newUser = await model({ ...user });
-      console.log(newUser)
       return newUser.save();
     } catch (error) {
       throw error;
@@ -162,7 +161,6 @@ class Db {
           new: true,
         }
       );
-      console.log(updatedPassword);
       return updatedPassword;
     } catch (error) {
       throw error;

@@ -48,17 +48,16 @@ class UserData {
         }
       }
     } catch (error) {
-      console.log(error)
       return Response.responseServerError(res);
     }
   }
   static async userLogin(req, res) {
     const { username, password } = req.body;
     try {
-      const { error } = validator.validate(req.body);
-      if (error) {
-        return Response.responseInvalidCredentials(res, Errors.VALIDATION);
-      }
+      // const { error } = validator.validate(req.body);
+      // if (error) {
+      //   return Response.responseInvalidCredentials(res, Errors.VALIDATION);
+      // }
       const user = await Db.findUser(User, username);
       if (user == null) {
         return Response.responseBadAuth(res, user);
@@ -86,7 +85,7 @@ class UserData {
         return Response.responseInvalidCredentials(res);
       }
     } catch (error) {
-      console.log(error)
+      console.log(error);
       return Response.responseServerError(res);
     }
   }
@@ -155,11 +154,11 @@ class UserData {
     const { reset_token } = req.params;
     const { password } = req.body;
     try {
-      const { error } = validator.validate(req.body);
-      // console.log(error)
-      if (error) {
-        return Response.responseInvalidPSWDConfirmation(res, Errors.VALIDATION);
-      }
+      // const { error } = validator.validate(req.body);
+      // // console.log(error)
+      // if (error) {
+      //   return Response.responseInvalidPSWDConfirmation(res, Errors.VALIDATION);
+      // }
       const userToReset = await Db.userResetStringToUpdate(User, reset_token);
       if (userToReset == null) {
         return Response.responseUserNotFound(res, Errors.INVALID_USER);
@@ -167,10 +166,11 @@ class UserData {
       if (
         moment().diff(moment.unix(userToReset.currentTime), "minutes") <= 30
       ) {
+        const hash = await bcrypt.hashPassword(password, 10);
         const updatedPassword = await Db.saveUpdatedPassword(
           User,
           userToReset._id,
-          password,
+          hash,
           reset_token
         );
         return Response.responseOk(res, updatedPassword);
