@@ -85,7 +85,6 @@ class UserData {
         return Response.responseInvalidCredentials(res);
       }
     } catch (error) {
-      console.log(error);
       return Response.responseServerError(res);
     }
   }
@@ -173,7 +172,9 @@ class UserData {
           hash,
           reset_token
         );
-        return Response.responseOk(res, updatedPassword);
+        if (req.params.resetToken == updatedPassword.reset_token) {
+          return Response.responseOk(res, updatedPassword);
+        }
       }
       return Response.responseTokenExpired(res);
     } catch (error) {

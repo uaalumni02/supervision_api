@@ -94,7 +94,7 @@ const responseUserNotFound = (res) => {
 const responseTokenExpired = (res) => {
     return res.status(401).json({
         success: false,
-        message: 'Reset token has expired',
+        message: 'Reset token is not valid or has expired',
     });
 }
 const responseOkTokenCreated = (res, data) => {

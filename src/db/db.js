@@ -156,7 +156,7 @@ class Db {
       const filter = { _id: userToReset._id };
       const updatedPassword = await model.findOneAndUpdate(
         filter,
-        { password, reset_token: null },
+        { password },
         {
           new: true,
         }
