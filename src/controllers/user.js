@@ -170,12 +170,16 @@ class UserData {
           User,
           userToReset._id,
           hash,
-          reset_token
+          // reset_token
+          userToReset.reset_token
         );
-        if (req.params.resetToken == updatedPassword.reset_token) {
-          return Response.responseOk(res, updatedPassword);
+        // console.log(userToReset.reset_token)
+        console.log(req.params.resetToken);
+        if (req.params.resetToken == userToReset.reset_token) {
+          return Response.responseOkUpdated(res, updatedPassword);
         }
       }
+
       return Response.responseTokenExpired(res);
     } catch (error) {
       return Response.responseServerError(res);

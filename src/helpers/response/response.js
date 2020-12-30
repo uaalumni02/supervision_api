@@ -110,6 +110,13 @@ const responseEmailNotFound = (res) => {
         message: "Will send reset link to email"
     });
 }
+const responseOkUpdated = (res, data) => {
+    return res.status(200).json({
+        success: true,
+        data, 
+        message: "Password reset successful, proceed to login",
+    });
+}
 export {
     responseBadRequest,
     responseNotFound,
@@ -127,5 +134,6 @@ export {
     responseUserNotFound,
     responseTokenExpired,
     responseOkTokenCreated,
-    responseEmailNotFound
+    responseEmailNotFound,
+    responseOkUpdated
 }
