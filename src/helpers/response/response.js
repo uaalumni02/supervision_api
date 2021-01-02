@@ -79,10 +79,10 @@ const responseInvalidCredentials = (res) => {
         message: 'Invalid username or password',
     });
 }
-const responseInvalidPSWDConfirmation = (res) => {
+const responseInvalidPassword = (res) => {
     return res.status(401).json({
         success: false,
-        message: 'Passwords do not match',
+        message: 'Invalid Password',
     });
 }
 const responseUserNotFound = (res) => {
@@ -130,7 +130,7 @@ export {
     responsesOk,
     responseOkUserLoggedIn,
     responseInvalidCredentials,
-    responseInvalidPSWDConfirmation,
+    responseInvalidPassword,
     responseUserNotFound,
     responseTokenExpired,
     responseOkTokenCreated,

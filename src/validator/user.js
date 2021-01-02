@@ -23,13 +23,13 @@ const schema = Joi.object({
     .min(3)
     .max(30),
   // .required(),
-  password: Joi.string().min(3).max(15),
+  password: Joi.string().min(3).max(15).required(),
   //add required back to confirm pswd
-  // confirmPassword: Joi.string().valid(Joi.ref("password")),
-  confirmPassword: Joi.any().equal(Joi.ref('password'))
+  confirmPassword: Joi.any()
+    .equal(Joi.ref("password"))
     .required()
-    .label('Confirm password')
-    .messages({ 'any.only': '{{#label}} does not match' }),
+    .label("Confirm password")
+    .messages({ "any.only": "{{#label}} does not match" }),
 
   id: Joi.string().regex(/^[0-9a-zA-Z]{24}$/i),
 });

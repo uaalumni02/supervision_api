@@ -153,11 +153,10 @@ class UserData {
     const { reset_token } = req.params;
     const { password } = req.body;
     try {
-      // const { error } = validator.validate(req.body);
-      // // console.log(error)
-      // if (error) {
-      //   return Response.responseInvalidPSWDConfirmation(res, Errors.VALIDATION);
-      // }
+      const { error } = validator.validate(req.body);
+      if (error) {
+        return Response.responseInvalidPassword(res, Errors.VALIDATION);
+      }
       const userToReset = await Db.userResetStringToUpdate(User, reset_token);
       if (userToReset == null) {
         return Response.responseUserNotFound(res, Errors.INVALID_USER);
@@ -170,11 +169,8 @@ class UserData {
           User,
           userToReset._id,
           hash,
-          // reset_token
           userToReset.reset_token
         );
-        // console.log(userToReset.reset_token)
-        console.log(req.params.resetToken);
         if (req.params.resetToken == userToReset.reset_token) {
           return Response.responseOkUpdated(res, updatedPassword);
         }
