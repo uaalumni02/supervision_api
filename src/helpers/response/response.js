@@ -117,6 +117,12 @@ const responseOkUpdated = (res, data) => {
         message: "Password reset successful, proceed to login",
     });
 }
+const responseInvalidConfirmation = (res) => {
+    return res.status(401).json({
+        success: false,
+        message: 'Passwords do not match ',
+    });
+}
 export {
     responseBadRequest,
     responseNotFound,
@@ -135,5 +141,6 @@ export {
     responseTokenExpired,
     responseOkTokenCreated,
     responseEmailNotFound,
-    responseOkUpdated
+    responseOkUpdated,
+    responseInvalidConfirmation
 }

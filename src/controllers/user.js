@@ -155,7 +155,7 @@ class UserData {
     try {
       const { error } = validator.validate(req.body);
       if (error) {
-        return Response.responseInvalidPassword(res, Errors.VALIDATION);
+        return Response.responseInvalidConfirmation(res);
       }
       const userToReset = await Db.userResetStringToUpdate(User, reset_token);
       if (userToReset == null) {
@@ -171,7 +171,6 @@ class UserData {
           hash,
           userToReset.reset_token
         );
-        console.log("------",updatedPassword)
         if (req.params.resetToken == userToReset.reset_token) {
           return Response.responseOkUpdated(res);
         }
