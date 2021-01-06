@@ -8,7 +8,7 @@ const router = express.Router();
 router
   .route("/")
   .post(checkAuth, meetingController.addMeeting)
-  .get(checkAuth, meetingController.getAllMeetings);
+  .get( meetingController.getAllMeetings);
 
 router
   .route("/:id")

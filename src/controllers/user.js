@@ -172,7 +172,7 @@ class UserData {
           userToReset.reset_token
         );
         if (req.params.resetToken == userToReset.reset_token) {
-          return Response.responseOkUpdated(res, updatedPassword);
+          return Response.responseOkUpdated(res);
         }
       }
 

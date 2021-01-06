@@ -4,6 +4,6 @@ import unitController from "../controllers/unit";
 
 const router = express.Router();
 
-router.route("/").post(checkAuth, unitController.addUnit);
+router.route("/").post(unitController.addUnit);
 
 export default router;
