@@ -171,6 +171,7 @@ class UserData {
           hash,
           userToReset.reset_token
         );
+        console.log("------",updatedPassword)
         if (req.params.resetToken == userToReset.reset_token) {
           return Response.responseOkUpdated(res);
         }
