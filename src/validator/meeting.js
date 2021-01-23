@@ -2,7 +2,7 @@ const Joi = require("@hapi/joi");
 Joi.objectId = require("joi-objectid")(Joi);
 
 const schema = Joi.object({
-  numberOfAttendees: Joi.string().min(1).max(2),
+  numberOfAttendees: Joi.number().min(1).max(2),
   date: Joi.number(),
   content: Joi.string().min(5).max(700),
   isDeleted: Joi.boolean(),

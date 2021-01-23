@@ -3,7 +3,7 @@ const { Schema } = mongoose;
 
 const meetingSchema = Schema({
   numberOfAttendees: {
-    type: String,
+    type: Number,
     required: true,
   },
   date: {

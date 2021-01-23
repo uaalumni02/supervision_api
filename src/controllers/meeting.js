@@ -18,6 +18,7 @@ class MeetingController {
 
     try {
       const { error } = meetingSchema.validate(meetingData);
+      console.log(error)
       if (error) {
         return Response.responseBadRequest(res, Errors.VALIDATION);
       }
