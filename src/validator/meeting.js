@@ -6,7 +6,7 @@ const schema = Joi.object({
   date: Joi.number(),
   content: Joi.string().min(5).max(700),
   isDeleted: Joi.boolean(),
-  attendees: Joi.string().min(1).max(25),
+  attendees: Joi.array().items(Joi.string()),
   units: Joi.objectId(),
   supervisionType: Joi.objectId(),
   approval: Joi.objectId(),

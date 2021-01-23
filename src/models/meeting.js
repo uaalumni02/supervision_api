@@ -42,7 +42,7 @@ const meetingSchema = Schema({
     {
       type: Schema.Types.ObjectId,
       ref: "User",
-      required: true,
+      // required: true,
     },
   ],
   __v: {

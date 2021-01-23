@@ -17,18 +17,14 @@ class MeetingController {
     meetingData.date = meetingTimestamp;
 
     try {
-      const { error, value } = meetingSchema.validate(meetingData);
+      const { error } = meetingSchema.validate(meetingData);
       if (error) {
         return Response.responseBadRequest(res, Errors.VALIDATION);
       }
-      const attendees = value.attendees;
-      const multiplePeople = attendees.split(",");
-      value.attendees = multiplePeople;
 
-      const meetingInfo = await Db.addMeeting(Meeting, value);
+      const meetingInfo = await Db.addMeeting(Meeting, meetingData);
       return Response.responseOkCreated(res, meetingInfo);
     } catch (error) {
-      console.log(error)
       return Response.responseServerError(res);
     }
   }
@@ -61,7 +57,7 @@ class MeetingController {
   static async deleteMeeting(req, res) {
     const { id } = req.params;
     try {
-      const { error, value } = meetingSchema.validate({id: id});
+      const { error, value } = meetingSchema.validate({ id: id });
       if (error) {
         return Response.responseValidationError(res, Errors.INVALID_ID);
       }
