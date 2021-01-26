@@ -105,6 +105,18 @@ class MeetingController {
       return Response.responseServerError(res);
     }
   }
+  static async getSupervisionById(req, res) {
+    const { id } = req.params;
+    try {
+      const supervisionById = await Db.getMeetingById(
+        Meeting,
+        id
+      );
+      return Response.responseOk(res, supervisionById);
+    } catch (error) {
+      return Response.responseServerError(res);
+    }
+  }
 }
 
 export default MeetingController;

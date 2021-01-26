@@ -174,6 +174,18 @@ class Db {
       throw error;
     }
   }
+
+  static async getMeetingById(model, id) {
+    try {
+      const meeting = await model
+        .findById(id)
+        .populate("units supervisionType attendees")
+        .exec();
+      return meeting;
+    } catch (error) {
+      throw error;
+    }
+  }
 }
 
 export default Db;

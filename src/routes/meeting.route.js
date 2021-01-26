@@ -8,12 +8,14 @@ const router = express.Router();
 router
   .route("/")
   .post(checkAuth, meetingController.addMeeting)
-  .get( meetingController.getAllMeetings);
+  .get(meetingController.getAllMeetings);
 
 router
   .route("/:id")
   .patch(checkAuth, checkIsAdmin, meetingController.editMeeting)
   .delete(checkAuth, checkIsAdmin, meetingController.deleteMeeting);
+
+router.route("/:id").get(checkAuth, meetingController.getSupervisionById);
 
 router
   .route("/:attendee")
