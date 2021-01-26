@@ -19,6 +19,7 @@ import supervisionTypeUnitsRoutes from "./routes/supervisionTypesUnits.route";
 import meeetingRoutes from "./routes/meeting.route";
 import userResetRoutes from "./routes/userReset.route";
 import updatePasswordRoutes from "./routes/updatePassword.route";
+import meetingIdRoutes from "./routes/meetingId.route";
 
 app.use(cors());
 app.use(express.json());
@@ -46,6 +47,7 @@ router.use("/supervisionUnits", supervisionTypeUnitsRoutes);
 router.use("/meeting", meeetingRoutes);
 router.use("/reset", userResetRoutes);
 router.use("/updatePassword", updatePasswordRoutes);
+router.use("/meetingId", meetingIdRoutes);
 
 app.use("/api", router);
 

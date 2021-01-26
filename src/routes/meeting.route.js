@@ -6,6 +6,10 @@ import meetingController from "../controllers/meeting";
 const router = express.Router();
 
 router
+  .route("/:attendee")
+  .get(checkAuth, meetingController.getSupervisionByAttendee);
+
+router
   .route("/")
   .post(checkAuth, meetingController.addMeeting)
   .get(meetingController.getAllMeetings);
@@ -15,10 +19,7 @@ router
   .patch(checkAuth, checkIsAdmin, meetingController.editMeeting)
   .delete(checkAuth, checkIsAdmin, meetingController.deleteMeeting);
 
-router.route("/:id").get(checkAuth, meetingController.getSupervisionById);
+// router.route("/:id").get(checkAuth, meetingController.getSupervisionById);
 
-router
-  .route("/:attendee")
-  .get(checkAuth, meetingController.getSupervisionByAttendee);
 
 export default router;
