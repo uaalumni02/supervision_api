@@ -20,6 +20,7 @@ import meeetingRoutes from "./routes/meeting.route";
 import userResetRoutes from "./routes/userReset.route";
 import updatePasswordRoutes from "./routes/updatePassword.route";
 import meetingIdRoutes from "./routes/meetingId.route";
+import signatureApprovalRoutes from "./routes/signatureApproval.route";
 
 app.use(cors());
 app.use(express.json());
@@ -48,6 +49,7 @@ router.use("/meeting", meeetingRoutes);
 router.use("/reset", userResetRoutes);
 router.use("/updatePassword", updatePasswordRoutes);
 router.use("/meetingId", meetingIdRoutes);
+router.use("/approval", signatureApprovalRoutes);
 
 app.use("/api", router);
 

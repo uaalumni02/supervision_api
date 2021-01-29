@@ -186,6 +186,33 @@ class Db {
       throw error;
     }
   }
+  static async addApproval(model, data) {
+    try {
+      const approval = await model({ ...data });
+      return approval.save();
+    } catch (error) {
+      throw error;
+    }
+  }
+  static async getAllApprovals(model) {
+    try {
+      const allApprovals = await model.find({})
+      return allApprovals;
+    } catch (error) {
+      throw error;
+    }
+  }
+  static async getApprovalById(model, id) {
+    try {
+      const approval = await model
+        .findById(id)
+        .populate("user meeting")
+        .exec();
+      return approval;
+    } catch (error) {
+      throw error;
+    }
+  }
 }
 
 export default Db;
