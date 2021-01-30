@@ -2,12 +2,12 @@ import mongoose from "mongoose";
 const { Schema } = mongoose;
 
 const supervisionApprovalTypeSchema = Schema({
-  user: {
+  userId: {
     type: Schema.Types.ObjectId,
       ref: "User",
       required: true
   },
-  meeting: {
+  meetingId: {
     type: Schema.Types.ObjectId,
       ref: "Meeting",
       required: true

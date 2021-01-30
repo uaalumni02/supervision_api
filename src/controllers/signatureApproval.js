@@ -3,18 +3,19 @@ import SignatureApproval from "../models/signatureApproval";
 
 import validator from "../validator/unit";
 import * as Response from "../helpers/response/response";
+import signatureApproval from "../models/signatureApproval";
 
 class Approval {
   static async addApproval(req, res) {
     const approvalData = { ...req.body };
     try {
-    //   const { error } = validator.validate(unitData);
-    //   if (error) {
-    //     return Response.responseBadRequest(res, Errors.VALIDATION);
-    //   }
-      const approvalInfo = await Db.addApproval(SignatureApproval, approvalData);
+      const approvalInfo = await Db.addApproval(
+        SignatureApproval,
+        approvalData
+      );
       return Response.responseOkCreated(res, approvalInfo);
     } catch (error) {
+      console.log(error);
       return Response.responseServerError(res);
     }
   }
@@ -29,10 +30,7 @@ class Approval {
   static async getApprovalById(req, res) {
     const { id } = req.params;
     try {
-      const approvalById = await Db.getApprovalById(
-        SignatureApproval,
-        id
-      );
+      const approvalById = await Db.getApprovalById(SignatureApproval, id);
       return Response.responseOk(res, approvalById);
     } catch (error) {
       return Response.responseServerError(res);

@@ -1,3 +1,5 @@
+import Joi from "@hapi/joi";
+
 class Db {
   static async addSupervisionType(model, data) {
     try {
@@ -196,7 +198,7 @@ class Db {
   }
   static async getAllApprovals(model) {
     try {
-      const allApprovals = await model.find({})
+      const allApprovals = await model.find({});
       return allApprovals;
     } catch (error) {
       throw error;
@@ -204,10 +206,7 @@ class Db {
   }
   static async getApprovalById(model, id) {
     try {
-      const approval = await model
-        .findById(id)
-        .populate("user meeting")
-        .exec();
+      const approval = await model.findById(id).populate("user meeting").exec();
       return approval;
     } catch (error) {
       throw error;

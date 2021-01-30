@@ -123,6 +123,12 @@ const responseInvalidConfirmation = (res) => {
         message: 'Passwords do not match ',
     });
 }
+const responseAlreadySigned = (res) => {
+    return res.status(401).json({
+        success: false,
+        message: 'Document already signed',
+    });
+}
 export {
     responseBadRequest,
     responseNotFound,
@@ -142,5 +148,6 @@ export {
     responseOkTokenCreated,
     responseEmailNotFound,
     responseOkUpdated,
-    responseInvalidConfirmation
+    responseInvalidConfirmation,
+    responseAlreadySigned
 }
