@@ -206,7 +206,7 @@ class Db {
   }
   static async getApprovalById(model, id) {
     try {
-      const approval = await model.findById(id).populate("user meeting").exec();
+      const approval = await model.findById(id).populate("userId meetingId").exec();
       return approval;
     } catch (error) {
       throw error;

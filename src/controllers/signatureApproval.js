@@ -15,7 +15,6 @@ class Approval {
       );
       return Response.responseOkCreated(res, approvalInfo);
     } catch (error) {
-      console.log(error);
       return Response.responseServerError(res);
     }
   }
