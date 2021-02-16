@@ -35,14 +35,15 @@ class Db {
     }
   }
 
-  static async findUser(model, username) {
+  static async findUser(model, username, email) {
     try {
-      const user = await model.findOne({ username });
-      return user;
+      const user = await model.find({ $or: [{ username }, { email }] });
+      return user[0];
     } catch (error) {
       throw error;
     }
   }
+
   static async saveUser(model, user) {
     try {
       const newUser = await model({ ...user });
@@ -181,7 +182,7 @@ class Db {
     try {
       const meeting = await model
         .findById(id)
-        .populate("units supervisionType attendees")
+        .populate("units supervisionType attendees creator")
         .exec();
       return meeting;
     } catch (error) {
@@ -198,7 +199,10 @@ class Db {
   }
   static async getAllApprovals(model) {
     try {
-      const allApprovals = await model.find({});
+      const allApprovals = await model
+        .find({})
+        .populate("userId meetingId")
+        .exec();
       return allApprovals;
     } catch (error) {
       throw error;
@@ -206,7 +210,10 @@ class Db {
   }
   static async getApprovalById(model, id) {
     try {
-      const approval = await model.findById(id).populate("userId meetingId").exec();
+      const approval = await model
+        .findById(id)
+        .populate("userId meetingId")
+        .exec();
       return approval;
     } catch (error) {
       throw error;

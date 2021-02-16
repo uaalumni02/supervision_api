@@ -10,16 +10,18 @@ import crypto from "crypto";
 import moment from "moment";
 
 import sendHandler from "../helpers/email/mailer";
+import { compareSync } from "bcrypt";
 
 class UserData {
   static async addUser(req, res) {
-    const { username, password } = req.body;
+    const { username, password, email } = req.body;
     try {
       const { error } = validator.validate(req.body);
       if (error) {
-        return Response.responseInvalidPSWDConfirmation(res, Errors.VALIDATION);
+        return Response.responseInvalidCredentials(res, Errors.VALIDATION);
       }
-      const user = await Db.findUser(User, username);
+      console.log(req.body.username)
+      const user = await Db.findUser(User, username, email);
       if (user != null) {
         return Response.responseConflict(res, user);
       } else {
@@ -48,6 +50,7 @@ class UserData {
         }
       }
     } catch (error) {
+      console.log(error)
       return Response.responseServerError(res);
     }
   }

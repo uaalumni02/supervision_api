@@ -29,7 +29,7 @@ const responseOk = (res, data) => {
 const responseConflict = (res) => {
     return res.status(409).json({
         success: false,
-        message: 'user name exist'
+        message: 'user name or email exist'
     });
 }
 const responseBadAuth = (res) => {
@@ -76,7 +76,7 @@ const responseOkUserLoggedIn = (res, userdata) => {
 const responseInvalidCredentials = (res) => {
     return res.status(401).json({
         success: false,
-        message: 'Invalid username or password',
+        message: 'Invalid log in credentials provided',
     });
 }
 const responseInvalidPassword = (res) => {

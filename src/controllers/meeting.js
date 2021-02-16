@@ -17,15 +17,16 @@ class MeetingController {
     meetingData.date = meetingTimestamp;
 
     try {
-      const { error } = meetingSchema.validate(meetingData);
-      console.log(error)
-      if (error) {
-        return Response.responseBadRequest(res, Errors.VALIDATION);
-      }
+      // const { error } = meetingSchema.validate(meetingData);
+      // console.log(error)
+      // if (error) {
+      //   return Response.responseBadRequest(res, Errors.VALIDATION);
+      // }
 
       const meetingInfo = await Db.addMeeting(Meeting, meetingData);
       return Response.responseOkCreated(res, meetingInfo);
     } catch (error) {
+      console.log(error)
       return Response.responseServerError(res);
     }
   }
@@ -65,12 +66,14 @@ class MeetingController {
       const body = { isDeleted: true };
       const isAuthorized = checkAuth(req);
       if (isAuthorized) {
+        // add check if user owns meeting along with isAuthotized &&
         const meetingToDelete = await Db.updateMeeting(Meeting, value.id, body);
         return !meetingToDelete
           ? Response.responseNotFound(res, Errors.INVALID_MEETING)
           : Response.responseOk(res, meetingToDelete);
       }
     } catch (error) {
+      console.log(error)
       return Response.responseServerError(res);
     }
   }
@@ -102,6 +105,7 @@ class MeetingController {
         return Response.responseOk(res, meetingToUpdate);
       }
     } catch (error) {
+      console.log(error)
       return Response.responseServerError(res);
     }
   }

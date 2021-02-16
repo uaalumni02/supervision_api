@@ -19,7 +19,7 @@ const meetingSchema = Schema({
   },
   isDeleted: {
     type: Boolean,
-    default: false
+    default: false,
   },
   attendees: [
     {
@@ -28,6 +28,16 @@ const meetingSchema = Schema({
       required: true,
     },
   ],
+  // creator: {
+  // // who ever started meeting is the meeting creator. Need to pass their ID to the creator as an objectId
+  // // creator can have ability to delete (not really delete) meeting set isDeleted to true and also edit
+  // // dont show delete or edit button if logged in user does not match the creator..check in API and front
+  // },
+  creator: {
+    type: Schema.Types.ObjectId,
+    ref: "User",
+    required: true,
+  },
   units: {
     type: Schema.Types.ObjectId,
     ref: "Unit",
@@ -38,21 +48,11 @@ const meetingSchema = Schema({
     ref: "SupervisionType",
     required: true,
   },
-  approval: [
-    {
-      type: Schema.Types.ObjectId,
-      ref: "User",
-      // required: true,
-    },
-  ],
+
   __v: {
     type: Number,
     select: false,
   },
 });
-
-// const arrayLimit = (val) => {
-//   return val.length <= 5;
-// };
 
 export default mongoose.model("Meeting", meetingSchema);

@@ -1,6 +1,6 @@
 import express from "express";
 import checkAuth from "../middleware/check-auth";
-import checkIsAdmin from "../middleware/check-isAdmin";
+// import checkIsAdmin from "../middleware/check-isAdmin";
 import meetingController from "../controllers/meeting";
 
 const router = express.Router();
@@ -16,10 +16,9 @@ router
 
 router
   .route("/:id")
-  .patch(checkAuth, checkIsAdmin, meetingController.editMeeting)
-  .delete(checkAuth, checkIsAdmin, meetingController.deleteMeeting);
+  .patch(checkAuth, meetingController.editMeeting)
+  .delete(checkAuth, meetingController.deleteMeeting);
 
 // router.route("/:id").get(checkAuth, meetingController.getSupervisionById);
-
 
 export default router;
