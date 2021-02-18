@@ -20,7 +20,6 @@ class UserData {
       if (error) {
         return Response.responseInvalidCredentials(res, Errors.VALIDATION);
       }
-      console.log(req.body.username)
       const user = await Db.findUser(User, username, email);
       if (user != null) {
         return Response.responseConflict(res, user);

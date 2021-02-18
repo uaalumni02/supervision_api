@@ -28,11 +28,6 @@ const meetingSchema = Schema({
       required: true,
     },
   ],
-  // creator: {
-  // // who ever started meeting is the meeting creator. Need to pass their ID to the creator as an objectId
-  // // creator can have ability to delete (not really delete) meeting set isDeleted to true and also edit
-  // // dont show delete or edit button if logged in user does not match the creator..check in API and front
-  // },
   creator: {
     type: Schema.Types.ObjectId,
     ref: "User",

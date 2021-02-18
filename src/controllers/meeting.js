@@ -15,7 +15,6 @@ class MeetingController {
       "YYYY-MM-DD hh:mmA"
     ).unix();
     meetingData.date = meetingTimestamp;
-
     try {
       // const { error } = meetingSchema.validate(meetingData);
       // console.log(error)
@@ -26,7 +25,7 @@ class MeetingController {
       const meetingInfo = await Db.addMeeting(Meeting, meetingData);
       return Response.responseOkCreated(res, meetingInfo);
     } catch (error) {
-      console.log(error)
+      console.log(error);
       return Response.responseServerError(res);
     }
   }
@@ -58,6 +57,7 @@ class MeetingController {
   }
   static async deleteMeeting(req, res) {
     const { id } = req.params;
+    const userId = req.userData.userId;
     try {
       const { error, value } = meetingSchema.validate({ id: id });
       if (error) {
@@ -66,14 +66,15 @@ class MeetingController {
       const body = { isDeleted: true };
       const isAuthorized = checkAuth(req);
       if (isAuthorized) {
-        // add check if user owns meeting along with isAuthotized &&
         const meetingToDelete = await Db.updateMeeting(Meeting, value.id, body);
+        if (userId != meetingToDelete.creator) {
+          return Response.responseInvalidPermission(res);
+        }
         return !meetingToDelete
           ? Response.responseNotFound(res, Errors.INVALID_MEETING)
           : Response.responseOk(res, meetingToDelete);
       }
     } catch (error) {
-      console.log(error)
       return Response.responseServerError(res);
     }
   }
@@ -85,7 +86,7 @@ class MeetingController {
       "YYYY-MM-DD hh:mmA"
     ).unix();
     meetingData.date = meetingTimestamp;
-
+    const userId = req.userData.userId;
     try {
       const { error, value: IdValue } = meetingSchema.validate({ id });
       if (error) {
@@ -93,7 +94,7 @@ class MeetingController {
       }
       const isAuthorized = checkAuth(req);
       if (isAuthorized) {
-        const { error, value } = meetingSchema.validate(meetingData);
+        const { error, value } = meetingSchema.validateAsync(meetingData);
         if (error) {
           return Response.responseBadRequest(res, Errors.VALIDATION);
         }
@@ -102,13 +103,17 @@ class MeetingController {
           IdValue.id,
           value
         );
+        if (userId != meetingToUpdate.creator) {
+          return Response.responseInvalidPermission(res);
+        }
         return Response.responseOk(res, meetingToUpdate);
       }
     } catch (error) {
-      console.log(error)
       return Response.responseServerError(res);
     }
   }
+  //edit and delete working properly
+  //other attendees could not see  meeting; only creator  when I added check
   static async getSupervisionById(req, res) {
     const { id } = req.params;
     try {

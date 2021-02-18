@@ -129,6 +129,13 @@ const responseAlreadySigned = (res) => {
         message: 'Document already signed',
     });
 }
+
+const responseInvalidPermission = (res) => {
+    return res.status(401).json({
+        success: false,
+        message: 'Not authorized to edit or delete data',
+    });
+}
 export {
     responseBadRequest,
     responseNotFound,
@@ -149,5 +156,6 @@ export {
     responseEmailNotFound,
     responseOkUpdated,
     responseInvalidConfirmation,
-    responseAlreadySigned
+    responseAlreadySigned,
+    responseInvalidPermission 
 }
