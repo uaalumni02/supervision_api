@@ -133,7 +133,7 @@ const responseAlreadySigned = (res) => {
 const responseInvalidPermission = (res) => {
     return res.status(401).json({
         success: false,
-        message: 'Not authorized to edit or delete data',
+        message: 'Not authorized to perform requested operation',
     });
 }
 export {

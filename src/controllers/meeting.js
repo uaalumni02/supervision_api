@@ -112,17 +112,26 @@ class MeetingController {
       return Response.responseServerError(res);
     }
   }
-  //edit and delete working properly
-  //other attendees could not see  meeting; only creator  when I added check
+
   static async getSupervisionById(req, res) {
     const { id } = req.params;
     try {
-      const supervisionById = await Db.getMeetingById(
-        Meeting,
-        id
-      );
-      return Response.responseOk(res, supervisionById);
+      const supervisionById = await Db.getMeetingById(Meeting, id);
+      // on front show error if non user or creator tries to access; only front end thing I need to do
+      // put repetitive code in helpers; like the code that checks if the user is a creator
+      // do some styling updates
+      //try to deploy
+      if (
+        (supervisionById.attendees[0]._id =
+          supervisionById.creator._id ||
+          supervisionById.attendees.includes(supervisionById.creator._id))
+      ) {
+        return Response.responseOk(res, supervisionById);
+      } else {
+        return Response.responseInvalidPermission(res);
+      }
     } catch (error) {
+      console.log(error);
       return Response.responseServerError(res);
     }
   }
