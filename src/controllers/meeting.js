@@ -114,6 +114,7 @@ class MeetingController {
   }
 
   static async getSupervisionById(req, res) {
+    const userId = req.userData.userId;
     const { id } = req.params;
     try {
       const supervisionById = await Db.getMeetingById(Meeting, id);
@@ -121,17 +122,15 @@ class MeetingController {
       // put repetitive code in helpers; like the code that checks if the user is a creator
       // do some styling updates
       //try to deploy
-      if (
-        (supervisionById.attendees[0]._id =
-          supervisionById.creator._id ||
-          supervisionById.attendees.includes(supervisionById.creator._id))
-      ) {
-        return Response.responseOk(res, supervisionById);
-      } else {
-        return Response.responseInvalidPermission(res);
+      for (var i = 0; i < supervisionById.attendees.length; i++) {
+        const attendees = supervisionById.attendees[i]._id;
+        if (userId != supervisionById.creator._id || attendees != userId) {
+          return Response.responseInvalidPermission(res);
+        } else {
+          return Response.responseOk(res, supervisionById);
+        }
       }
     } catch (error) {
-      console.log(error);
       return Response.responseServerError(res);
     }
   }
