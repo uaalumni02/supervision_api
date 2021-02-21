@@ -118,7 +118,6 @@ class MeetingController {
     const { id } = req.params;
     try {
       const supervisionById = await Db.getMeetingById(Meeting, id);
-      // on front show error if non user or creator tries to access; only front end thing I need to do
       // put repetitive code in helpers; like the code that checks if the user is a creator
       // do some styling updates
       //try to deploy
