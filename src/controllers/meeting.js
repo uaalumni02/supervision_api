@@ -78,35 +78,86 @@ class MeetingController {
       return Response.responseServerError(res);
     }
   }
+  // static async editMeeting(req, res) {
+  //   const { id } = req.params;
+  //   const meetingData = { ...req.body };
+
+  //   const userId = req.userData.userId;
+
+  //   try {
+  //     const { error, value: IdValue } = meetingSchema.validate({ id });
+
+  //     if (error) {
+  //       return Response.responseValidationError(res, Errors.INVALID_ID);
+  //     }
+  //     const isAuthorized = checkAuth(req);
+  //     if (isAuthorized) {
+  //       const { error, value } = meetingSchema.validateAsync(meetingData);
+  //       console.log(error)
+
+  //       if (error) {
+  //         return Response.responseBadRequest(res, Errors.VALIDATION);
+  //       }
+
+  //       const meetingToUpdate = await Db.getMeetingById(
+  //         Meeting,
+  //         IdValue.id,
+  //         value
+  //       );
+
+  //       if (userId != meetingToUpdate.creator._id) {
+  //         return Response.responseInvalidPermission(res);
+  //       }
+  //       const updatedMeeting = await Db.updateMeeting(
+  //         Meeting,
+  //         IdValue.id,
+  //         value
+  //       );
+
+  //       return Response.responseOk(res, updatedMeeting);
+  //     }
+  //   } catch (error) {
+  //     console.log(error)
+  //     return Response.responseServerError(res);
+  //   }
+  // }
+
   static async editMeeting(req, res) {
-    const { id } = req.params;
+    const id = req.params.id;
+    const userId = req.userData.userId;
     const meetingData = { ...req.body };
     const meetingTimestamp = moment(
       meetingData.date,
       "YYYY-MM-DD hh:mmA"
     ).unix();
     meetingData.date = meetingTimestamp;
-    const userId = req.userData.userId;
+
     try {
       const { error, value: IdValue } = meetingSchema.validate({ id });
+
       if (error) {
         return Response.responseValidationError(res, Errors.INVALID_ID);
       }
+
       const isAuthorized = checkAuth(req);
       if (isAuthorized) {
         const { error, value } = meetingSchema.validateAsync(meetingData);
+
         if (error) {
           return Response.responseBadRequest(res, Errors.VALIDATION);
         }
-        const meetingToUpdate = await Db.updateMeeting(
+        const meetingToUpdate = await Db.getMeetingById(
           Meeting,
           IdValue.id,
           value
         );
-        if (userId != meetingToUpdate.creator) {
+
+        if (userId != meetingToUpdate.creator._id) {
           return Response.responseInvalidPermission(res);
         }
-        return Response.responseOk(res, meetingToUpdate);
+
+        const updateMeeting = await Db.updateMeeting(Meeting, id, meetingData);
+        return Response.responseOk(res, updateMeeting);
       }
     } catch (error) {
       return Response.responseServerError(res);

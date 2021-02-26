@@ -10,6 +10,11 @@ mongoose.Promise = global.Promise;
 
 const port = process.env.PORT || 3000;
 
+
+app.use(cors());
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
 const router = express.Router();
 
 import supervisionTypeRoutes from "./routes/supervisionType.route";
@@ -22,9 +27,6 @@ import updatePasswordRoutes from "./routes/updatePassword.route";
 import meetingIdRoutes from "./routes/meetingId.route";
 import signatureApprovalRoutes from "./routes/signatureApproval.route";
 
-app.use(cors());
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
 
 const DB_URL = process.env.MONGO_URL;
 const TEST_DB_URL = process.env.MONGO_TEST_URL;
