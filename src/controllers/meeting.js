@@ -7,6 +7,8 @@ import meetingSchema from "../validator/meeting";
 import * as Response from "../helpers/response/response";
 import Errors from "../helpers/constants/constants";
 
+import { checkUserForDelete, checkUserForEdit } from "../helpers/user/user";
+
 class MeetingController {
   static async addMeeting(req, res) {
     const meetingData = { ...req.body };
@@ -25,7 +27,6 @@ class MeetingController {
       const meetingInfo = await Db.addMeeting(Meeting, meetingData);
       return Response.responseOkCreated(res, meetingInfo);
     } catch (error) {
-      console.log(error);
       return Response.responseServerError(res);
     }
   }
@@ -67,9 +68,7 @@ class MeetingController {
       const isAuthorized = checkAuth(req);
       if (isAuthorized) {
         const meetingToDelete = await Db.updateMeeting(Meeting, value.id, body);
-        if (userId != meetingToDelete.creator) {
-          return Response.responseInvalidPermission(res);
-        }
+        checkUserForDelete(userId, meetingToDelete, res);
         return !meetingToDelete
           ? Response.responseNotFound(res, Errors.INVALID_MEETING)
           : Response.responseOk(res, meetingToDelete);
@@ -102,16 +101,11 @@ class MeetingController {
           IdValue.id,
           value
         );
-
-        if (userId != meetingToUpdate.creator._id) {
-          return Response.responseInvalidPermission(res);
-        }
-
+        checkUserForEdit(userId, meetingToUpdate, res);
         const updateMeeting = await Db.updateMeeting(Meeting, id, meetingData);
         return Response.responseOk(res, updateMeeting);
       }
     } catch (error) {
-      console.log(error);
       return Response.responseServerError(res);
     }
   }
@@ -121,9 +115,6 @@ class MeetingController {
     const { id } = req.params;
     try {
       const supervisionById = await Db.getMeetingById(Meeting, id);
-      // put repetitive code in helpers; like the code that checks if the user is a creator
-      // do some styling updates
-      //try to deploy
       for (var i = 0; i < supervisionById.attendees.length; i++) {
         const attendees = supervisionById.attendees[i]._id;
         if (userId != supervisionById.creator._id || attendees != userId) {
