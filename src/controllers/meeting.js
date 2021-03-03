@@ -67,8 +67,14 @@ class MeetingController {
       const body = { isDeleted: true };
       const isAuthorized = checkAuth(req);
       if (isAuthorized) {
+        const supervisionById = await Db.getMeetingById(Meeting, id);
+
+        if (checkUserForDelete(userId, supervisionById)) {
+          return Response.responseInvalidPermission(res);
+        }
+
         const meetingToDelete = await Db.updateMeeting(Meeting, value.id, body);
-        checkUserForDelete(userId, meetingToDelete, res);
+
         return !meetingToDelete
           ? Response.responseNotFound(res, Errors.INVALID_MEETING)
           : Response.responseOk(res, meetingToDelete);
@@ -101,7 +107,9 @@ class MeetingController {
           IdValue.id,
           value
         );
-        checkUserForEdit(userId, meetingToUpdate, res);
+        if(checkUserForEdit(userId, meetingToUpdate)) {
+        return Response.responseInvalidPermission(res);
+        }
         const updateMeeting = await Db.updateMeeting(Meeting, id, meetingData);
         return Response.responseOk(res, updateMeeting);
       }
