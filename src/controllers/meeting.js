@@ -107,8 +107,8 @@ class MeetingController {
           IdValue.id,
           value
         );
-        if(checkUserForEdit(userId, meetingToUpdate)) {
-        return Response.responseInvalidPermission(res);
+        if (checkUserForEdit(userId, meetingToUpdate)) {
+          return Response.responseInvalidPermission(res);
         }
         const updateMeeting = await Db.updateMeeting(Meeting, id, meetingData);
         return Response.responseOk(res, updateMeeting);
@@ -120,16 +120,17 @@ class MeetingController {
 
   static async getSupervisionById(req, res) {
     const userId = req.userData.userId;
+    let attendees;
     const { id } = req.params;
     try {
       const supervisionById = await Db.getMeetingById(Meeting, id);
       for (var i = 0; i < supervisionById.attendees.length; i++) {
-        const attendees = supervisionById.attendees[i]._id;
-        if (userId != supervisionById.creator._id || attendees != userId) {
-          return Response.responseInvalidPermission(res);
-        } else {
-          return Response.responseOk(res, supervisionById);
-        }
+        attendees = supervisionById.attendees[i]._id;
+      }
+      if (userId != attendees) {
+        return Response.responseInvalidPermission(res);
+      } else {
+        return Response.responseOk(res, supervisionById);
       }
     } catch (error) {
       return Response.responseServerError(res);

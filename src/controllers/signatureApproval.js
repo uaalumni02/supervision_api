@@ -3,7 +3,6 @@ import SignatureApproval from "../models/signatureApproval";
 
 import validator from "../validator/unit";
 import * as Response from "../helpers/response/response";
-import signatureApproval from "../models/signatureApproval";
 
 class Approval {
   static async addApproval(req, res) {
@@ -32,6 +31,7 @@ class Approval {
       const approvalById = await Db.getApprovalById(SignatureApproval, id);
       return Response.responseOk(res, approvalById);
     } catch (error) {
+      console.log(error)
       return Response.responseServerError(res);
     }
   }
