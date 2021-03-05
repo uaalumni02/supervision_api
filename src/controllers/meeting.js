@@ -120,18 +120,18 @@ class MeetingController {
 
   static async getSupervisionById(req, res) {
     const userId = req.userData.userId;
-    let attendees;
+
     const { id } = req.params;
     try {
       const supervisionById = await Db.getMeetingById(Meeting, id);
-      for (var i = 0; i < supervisionById.attendees.length; i++) {
-        attendees = supervisionById.attendees[i]._id;
-      }
-      if (userId != attendees) {
-        return Response.responseInvalidPermission(res);
-      } else {
+
+      if (
+        supervisionById.attendees.join().includes(userId) ||
+        userId == supervisionById.creator._id
+      ) {
         return Response.responseOk(res, supervisionById);
       }
+      return Response.responseInvalidPermission(res);
     } catch (error) {
       return Response.responseServerError(res);
     }
