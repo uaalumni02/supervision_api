@@ -18,11 +18,10 @@ class MeetingController {
     ).unix();
     meetingData.date = meetingTimestamp;
     try {
-      // const { error } = meetingSchema.validate(meetingData);
-      // console.log(error)
-      // if (error) {
-      //   return Response.responseBadRequest(res, Errors.VALIDATION);
-      // }
+      const { error } = meetingSchema.validate(meetingData);
+      if (error) {
+        return Response.responseBadRequest(res, Errors.VALIDATION);
+      }
 
       const meetingInfo = await Db.addMeeting(Meeting, meetingData);
       return Response.responseOkCreated(res, meetingInfo);

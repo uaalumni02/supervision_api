@@ -11,6 +11,7 @@ const schema = Joi.object({
   supervisionType: Joi.objectId(),
   approval: Joi.objectId(),
   // id: Joi.string().regex(/^[0-9a-fA-F]{24}$/i),
+  creator: Joi.objectId(),
   id: Joi.string(),
 });
 

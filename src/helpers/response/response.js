@@ -1,7 +1,7 @@
 const responseBadRequest = (res) => {
     return res.status(400).json({
         success: false,
-        message: 'unable to save provided input'
+        message: 'Please enter required information'
     });
 }
 
