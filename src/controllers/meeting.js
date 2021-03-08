@@ -8,7 +8,6 @@ import * as Response from "../helpers/response/response";
 import Errors from "../helpers/constants/constants";
 
 import { checkUserForDelete, checkUserForEdit } from "../helpers/user/user";
-//test
 class MeetingController {
   static async addMeeting(req, res) {
     const meetingData = { ...req.body };

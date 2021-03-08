@@ -53,6 +53,7 @@ class UserData {
     }
   }
   static async userLogin(req, res) {
+    console.log('req', req);
     const { username, password } = req.body;
     try {
       // const { error } = validator.validate(req.body);
@@ -86,6 +87,7 @@ class UserData {
         return Response.responseInvalidCredentials(res);
       }
     } catch (error) {
+      console.log('error', error)
       return Response.responseServerError(res);
     }
   }
