@@ -12,7 +12,7 @@ router
 router
   .route("/")
   .post(checkAuth, meetingController.addMeeting)
-  .get(meetingController.getAllMeetings);
+  .get(checkAuth,meetingController.getAllMeetings);
 
 router
   .route("/:id")
